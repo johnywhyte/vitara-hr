@@ -12,7 +12,14 @@ const nextConfig: NextConfig = {
   },
   experimental: {
     serverActions: {
-      allowedOrigins: ['localhost:3000'],
+      // Allow server actions from any origin that matches the deployment host.
+      // Restricting to localhost:3000 blocks all production requests.
+      allowedOrigins: process.env.NEXT_PUBLIC_APP_URL
+        ? [
+            'localhost:3000',
+            new URL(process.env.NEXT_PUBLIC_APP_URL).host,
+          ]
+        : ['localhost:3000'],
     },
   },
 };
