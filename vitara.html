@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vitara — Recruitment MVP Lo-Fi Prototype</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #2D6A4F;
+    --green-light: #52B788;
+    --green-pale: #D8F3DC;
+    --green-mid: #B7E4C7;
+    --amber: #E9C46A;
+    --amber-pale: #FFF3CD;
+    --red-pale: #FFE5E5;
+    --red: #C0392B;
+    --blue-pale: #E8F4FD;
+    --blue: #2980B9;
+    --gray-100: #F8F9FA;
+    --gray-200: #E9ECEF;
+    --gray-300: #DEE2E6;
+    --gray-400: #ADB5BD;
+    --gray-600: #6C757D;
+    --gray-800: #343A40;
+    --white: #FFFFFF;
+    --border: 1px solid #DEE2E6;
+    --radius: 6px;
+    --radius-lg: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: 13px;
+    color: var(--gray-800);
+    background: #F0F2F5;
+    line-height: 1.5;
+  }
+
+  /* ── COVER ── */
+  .cover {
+    background: var(--green);
+    color: white;
+    padding: 60px 40px 48px;
+    page-break-after: always;
+  }
+  .cover-tag { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; opacity: 0.7; margin-bottom: 20px; }
+  .cover-title { font-size: 34px; font-weight: 700; line-height: 1.2; margin-bottom: 8px; }
+  .cover-sub { font-size: 16px; opacity: 0.85; margin-bottom: 32px; }
+  .cover-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 40px; }
+  .cover-pill { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 20px; padding: 4px 14px; font-size: 11px; }
+  .cover-meta { border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px; font-size: 12px; opacity: 0.7; display: flex; gap: 32px; }
+
+  /* ── WRAPPER ── */
+  .wrapper { max-width: 1000px; margin: 0 auto; padding: 32px 24px; }
+
+  /* ── SECTION HEADERS ── */
+  .section-header {
+    background: var(--green);
+    color: white;
+    padding: 14px 20px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-header:first-child { margin-top: 0; }
+  .stage-badge {
+    background: rgba(255,255,255,0.2);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .section-header h2 { font-size: 15px; font-weight: 600; }
+  .section-header p { font-size: 11px; opacity: 0.8; margin-top: 1px; }
+
+  .section-body {
+    background: var(--white);
+    border: var(--border);
+    border-top: none;
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+    padding: 20px;
+    margin-bottom: 8px;
+  }
+
+  /* ── SCREEN FRAMES ── */
+  .screens-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-bottom: 20px; }
+  .screen-frame {
+    border: 1.5px solid var(--gray-300);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--gray-100);
+    box-shadow: var(--shadow);
+  }
+  .screen-chrome {
+    background: var(--gray-200);
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid var(--gray-300);
+  }
+  .chrome-dots { display: flex; gap: 4px; }
+  .chrome-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--gray-400); }
+  .chrome-url { flex: 1; background: white; border: 1px solid var(--gray-300); border-radius: 4px; padding: 2px 8px; font-size: 10px; color: var(--gray-600); }
+  .screen-label { font-size: 10px; font-weight: 600; color: var(--gray-600); padding: 8px 12px 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .screen-content { padding: 8px 12px 12px; }
+
+  /* ── UI ELEMENTS ── */
+  .ui-field {
+    background: white;
+    border: 1px solid var(--gray-300);
+    border-radius: 4px;
+    padding: 5px 8px;
+    font-size: 11px;
+    color: var(--gray-600);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+  }
+  .ui-field-label { font-size: 10px; font-weight: 600; color: var(--gray-600); margin-bottom: 2px; }
+  .ui-btn {
+    display: inline-block;
+    padding: 5px 14px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    border: 1px solid var(--gray-300);
+    background: white;
+    color: var(--gray-800);
+    margin-top: 6px;
+    cursor: default;
+  }
+  .ui-btn.primary { background: var(--green); color: white; border-color: var(--green); }
+  .ui-btn.secondary { background: white; color: var(--green); border-color: var(--green); }
+  .ui-btn-row { display: flex; gap: 6px; justify-content: flex-end; margin-top: 8px; }
+
+  .ui-heading { font-size: 13px; font-weight: 700; color: var(--gray-800); margin-bottom: 2px; }
+  .ui-sub { font-size: 10px; color: var(--gray-600); margin-bottom: 10px; }
+  .ui-divider { height: 1px; background: var(--gray-200); margin: 8px 0; }
+
+  .check-row { display: flex; align-items: flex-start; gap: 6px; font-size: 11px; color: var(--gray-800); margin-bottom: 4px; }
+  .check-box { width: 12px; height: 12px; border: 1px solid var(--gray-400); border-radius: 2px; flex-shrink: 0; margin-top: 1px; }
+  .check-filled { background: var(--green); border-color: var(--green); display: flex; align-items: center; justify-content: center; }
+  .check-filled::after { content: '✓'; color: white; font-size: 8px; }
+
+  .pill { display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 600; }
+  .pill-green { background: var(--green-pale); color: var(--green); }
+  .pill-amber { background: var(--amber-pale); color: #856404; }
+  .pill-blue { background: var(--blue-pale); color: var(--blue); }
+  .pill-red { background: var(--red-pale); color: var(--red); }
+  .pill-gray { background: var(--gray-200); color: var(--gray-600); }
+
+  .notice {
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    font-size: 11px;
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .notice-icon { flex-shrink: 0; font-size: 13px; }
+  .notice-blue { background: var(--blue-pale); color: #1a5276; border-left: 3px solid var(--blue); }
+  .notice-amber { background: var(--amber-pale); color: #7d5a00; border-left: 3px solid var(--amber); }
+  .notice-green { background: var(--green-pale); color: var(--green); border-left: 3px solid var(--green-light); }
+  .notice-red { background: var(--red-pale); color: var(--red); border-left: 3px solid var(--red); }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; margin: 16px 0; }
+  .flow-step {
+    background: var(--green-pale);
+    border: 1.5px solid var(--green-mid);
+    border-radius: var(--radius);
+    padding: 8px 12px;
+    text-align: center;
+    min-width: 90px;
+  }
+  .flow-step-num { font-size: 10px; font-weight: 700; color: var(--green); }
+  .flow-step-label { font-size: 10px; color: var(--gray-800); margin-top: 2px; font-weight: 600; }
+  .flow-step-desc { font-size: 9px; color: var(--gray-600); margin-top: 1px; }
+  .flow-arrow { font-size: 16px; color: var(--gray-400); padding: 0 4px; }
+  .flow-step.rejected { background: var(--red-pale); border-color: #f5c6c6; }
+  .flow-step.rejected .flow-step-num { color: var(--red); }
+
+  /* ── SPECS TABLE ── */
+  .specs-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
+  .specs-table th { background: var(--gray-100); text-align: left; padding: 6px 10px; font-weight: 600; border: var(--border); font-size: 10px; color: var(--gray-600); }
+  .specs-table td { padding: 6px 10px; border: var(--border); vertical-align: top; }
+  .specs-table tr:nth-child(even) td { background: var(--gray-100); }
+
+  /* ── LOGIC BOX ── */
+  .logic-box {
+    background: var(--gray-100);
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    margin-top: 12px;
+    font-size: 11px;
+  }
+  .logic-box h4 { font-size: 11px; font-weight: 700; margin-bottom: 6px; color: var(--gray-800); }
+  .logic-row { display: flex; gap: 8px; margin-bottom: 4px; align-items: flex-start; }
+  .logic-label { font-weight: 600; min-width: 80px; color: var(--gray-600); flex-shrink: 0; }
+
+  /* ── PATH COMPARISON ── */
+  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+  .path-card {
+    border: var(--border);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+    background: white;
+  }
+  .path-card.recommended { border-color: var(--green); border-width: 2px; }
+  .path-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .path-card.recommended .path-title { color: var(--green); }
+  .path-item { display: flex; gap: 6px; font-size: 11px; margin-bottom: 4px; }
+
+  /* ── IMPACT CARDS ── */
+  .impact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-top: 12px; }
+  .impact-card {
+    background: var(--green-pale);
+    border: 1px solid var(--green-mid);
+    border-radius: var(--radius-lg);
+    padding: 14px;
+  }
+  .impact-num { font-size: 11px; font-weight: 700; color: var(--green); margin-bottom: 2px; }
+  .impact-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+  .impact-desc { font-size: 10px; color: var(--gray-600); }
+
+  /* ── HR DASHBOARD ── */
+  .dash-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .dash-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .dash-stat { background: var(--gray-100); border: var(--border); border-radius: var(--radius); padding: 8px 10px; text-align: center; }
+  .dash-stat-num { font-size: 18px; font-weight: 700; color: var(--green); }
+  .dash-stat-label { font-size: 9px; color: var(--gray-600); margin-top: 2px; }
+  .dash-table { width: 100%; border-collapse: collapse; font-size: 10px; }
+  .dash-table th { background: var(--gray-100); padding: 5px 8px; text-align: left; border: var(--border); font-weight: 600; color: var(--gray-600); }
+  .dash-table td { padding: 5px 8px; border: var(--border); }
+  .progress-bar { height: 4px; background: var(--gray-200); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--green-light); border-radius: 2px; }
+
+  /* ── ANNOTATION ── */
+  .annotation-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 12px; }
+  .anno-section h4 { font-size: 11px; font-weight: 700; color: var(--gray-800); margin-bottom: 6px; border-bottom: 1px solid var(--gray-200); padding-bottom: 4px; }
+  .anno-item { font-size: 11px; margin-bottom: 4px; padding-left: 10px; border-left: 2px solid var(--green-light); color: var(--gray-800); }
+  .anno-item span { color: var(--gray-600); font-size: 10px; display: block; }
+
+  /* ── TOC ── */
+  .toc { background: white; border: var(--border); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 32px; }
+  .toc h3 { font-size: 13px; font-weight: 700; margin-bottom: 12px; color: var(--gray-800); }
+  .toc-item { display: flex; align-items: center; gap: 10px; padding: 6px 0; border-bottom: 1px dashed var(--gray-200); font-size: 12px; }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-badge { width: 22px; height: 22px; border-radius: 50%; background: var(--green-pale); border: 1px solid var(--green-mid); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; color: var(--green); flex-shrink: 0; }
+  .toc-item-title { font-weight: 600; }
+  .toc-item-desc { color: var(--gray-600); font-size: 11px; }
+
+  /* ── COST TABLE ── */
+  .cost-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .cost-table th { background: var(--green); color: white; padding: 7px 10px; text-align: left; font-size: 10px; }
+  .cost-table td { padding: 6px 10px; border-bottom: 1px solid var(--gray-200); }
+  .cost-table tr:last-child td { border-bottom: none; }
+  .cost-table .path-a { color: var(--green); font-weight: 600; }
+  .cost-table .path-b { color: #856404; font-weight: 600; }
+
+  /* ── PAGE BREAK ── */
+  @media print {
+    .page-break { page-break-before: always; }
+    body { background: white; }
+    .wrapper { padding: 20px; }
+  }
+
+  /* ── FOOTER ── */
+  .doc-footer { text-align: center; font-size: 10px; color: var(--gray-400); margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--gray-300); }
+
+  /* ── DIVIDER LABEL ── */
+  .divider-label { display: flex; align-items: center; gap: 10px; margin: 8px 0 12px; }
+  .divider-label span { font-size: 10px; font-weight: 700; color: var(--gray-600); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.5px; }
+  .divider-line { flex: 1; height: 1px; background: var(--gray-200); }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ COVER ═══════════ -->
+<div class="cover">
+  <p class="cover-tag">Low-Fidelity Prototype · Group 6 · 2026</p>
+  <h1 class="cover-title">Vitara Recruitment<br>Process Automation</h1>
+  <p class="cover-sub">Full MVP — End-to-End Candidate Journey &amp; HR Admin Dashboard</p>
+  <div class="cover-pills">
+    <span class="cover-pill">Stage 1 — Account &amp; Profile</span>
+    <span class="cover-pill">Stage 2 — Document Upload</span>
+    <span class="cover-pill">Stage 3 — KYC Verification</span>
+    <span class="cover-pill">Stage 4 — Guarantor</span>
+    <span class="cover-pill">Stage 5 — HR Screening</span>
+    <span class="cover-pill">HR Admin Dashboard</span>
+  </div>
+  <div class="cover-meta">
+    <span>Vitara Agricultural E-Commerce · Ghana · West Africa</span>
+    <span>vitara.ag</span>
+    <span>Godfred Boateng · Joshua Unger · Chiamaka Alufuo · Maureen John-Olorunfemi</span>
+  </div>
+</div>
+
+<!-- ═══════════ WRAPPER ═══════════ -->
+<div class="wrapper">
+
+  <!-- TOC -->
+  <div class="toc">
+    <h3>Document Contents</h3>
+    <div class="toc-item"><div class="toc-badge">1</div><div><div class="toc-item-title">Account Creation &amp; Profile</div><div class="toc-item-desc">Landing page → sign-up → mandatory profile form → database save</div></div></div>
+    <div class="toc-item"><div class="toc-badge">2</div><div><div class="toc-item-title">Document Upload &amp; Validation</div><div class="toc-item-desc">ID docs, CV, cover letter, references, guarantor details — gated submission</div></div></div>
+    <div class="toc-item"><div class="toc-badge">3</div><div><div class="toc-item-title">KYC — Ghana Card Verification</div><div class="toc-item-desc">NIA/Smile Identity API check → pass or flag for HR review</div></div></div>
+    <div class="toc-item"><div class="toc-badge">4</div><div><div class="toc-item-title">Guarantor Verification</div><div class="toc-item-desc">Automated email → guarantor ID check → digital signature</div></div></div>
+    <div class="toc-item"><div class="toc-badge">5</div><div><div class="toc-item-title">Screening — Path A vs Path B</div><div class="toc-item-desc">Core HR forwarding (Path A) vs AI-assisted scoring layer (Path B)</div></div></div>
+    <div class="toc-item"><div class="toc-badge">★</div><div><div class="toc-item-title">HR Admin Dashboard</div><div class="toc-item-desc">Live pipeline view, candidate cards, interview scheduling</div></div></div>
+    <div class="toc-item"><div class="toc-badge">$</div><div><div class="toc-item-title">Cost Implications &amp; Expected Impact</div><div class="toc-item-desc">Path A vs Path B cost breakdown and what Vitara gains</div></div></div>
+  </div>
+
+
+  <!-- ═══ STAGE 1 ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">Stage 1</span>
+        <h2>Account Creation &amp; Profile</h2>
+      </div>
+      <p>Candidate visits application link → creates account → completes mandatory profile form</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="screens-row">
+
+      <!-- Screen A: Landing -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply</div>
+        </div>
+        <div class="screen-label">Screen A — Application Landing</div>
+        <div class="screen-content">
+          <div style="background:var(--green);color:white;border-radius:4px;padding:8px 10px;margin-bottom:8px;font-size:11px;font-weight:700;">
+            Vitara · Apply to become a Field Agent
+          </div>
+          <p style="font-size:10px;color:var(--gray-600);margin-bottom:8px;">Connecting women farmers in West Africa to global markets.</p>
+          <div class="check-row"><div class="check-box"></div><span>Complete profile form</span></div>
+          <div class="check-row"><div class="check-box"></div><span>Upload required documents</span></div>
+          <div class="check-row"><div class="check-box"></div><span>Ghana Card KYC check</span></div>
+          <div class="check-row"><div class="check-box"></div><span>Guarantor verification</span></div>
+          <div class="ui-btn-row"><div class="ui-btn primary">Start application →</div></div>
+        </div>
+      </div>
+
+      <!-- Screen B: Sign up -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/signup</div>
+        </div>
+        <div class="screen-label">Screen B — Create Account</div>
+        <div class="screen-content">
+          <p class="ui-heading">Create your account</p>
+          <p class="ui-sub">Track your application and receive updates</p>
+          <div class="ui-field-label">Email address *</div>
+          <div class="ui-field">📧 your@email.com</div>
+          <div class="ui-field-label">Password *</div>
+          <div class="ui-field">🔒 ••••••••</div>
+          <div class="ui-field-label">Confirm password *</div>
+          <div class="ui-field">🔒 ••••••••</div>
+          <div class="notice notice-blue" style="margin-top:8px">
+            <span>Email verification sent after account creation</span>
+          </div>
+          <div class="ui-btn-row"><div class="ui-btn">← Back</div><div class="ui-btn primary">Create account →</div></div>
+        </div>
+      </div>
+
+      <!-- Screen C: Profile form -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/profile</div>
+        </div>
+        <div class="screen-label">Screen C — Profile Form (cannot skip)</div>
+        <div class="screen-content">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <p class="ui-heading">Complete your profile</p>
+            <span class="pill pill-amber">Cannot skip</span>
+          </div>
+          <div style="display:flex;gap:3px;margin-bottom:8px">
+            <div style="flex:1;height:3px;background:var(--green-light);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--green-light);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--gray-200);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--gray-200);border-radius:2px"></div>
+            <div style="flex:1;height:3px;background:var(--gray-200);border-radius:2px"></div>
+          </div>
+          <div class="ui-field-label">Full legal name *</div>
+          <div class="ui-field">As on Ghana Card</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">
+            <div><div class="ui-field-label">Date of birth *</div><div class="ui-field">DD/MM/YYYY</div></div>
+            <div><div class="ui-field-label">Age</div><div class="ui-field" style="background:var(--gray-100);color:var(--gray-400)">Auto</div></div>
+          </div>
+          <div class="ui-field-label">Phone number *</div>
+          <div class="ui-field">+233 ___</div>
+          <div class="ui-field-label">Region / district *</div>
+          <div class="ui-field">Select region…</div>
+          <div class="ui-field-label">Shea Butter experience *</div>
+          <div style="display:flex;gap:4px;font-size:10px;flex-wrap:wrap">
+            <div class="ui-field" style="flex:1;padding:4px 6px">None</div>
+            <div class="ui-field" style="flex:1;padding:4px 6px">&lt;1yr</div>
+            <div class="ui-field" style="flex:1;padding:4px 6px">1–3yr</div>
+            <div class="ui-field" style="flex:1;padding:4px 6px">3+yr</div>
+          </div>
+          <div class="ui-btn-row"><div class="ui-btn primary">Save &amp; continue →</div></div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="divider-label"><div class="divider-line"></div><span>Profile fields collected</span><div class="divider-line"></div></div>
+    <div class="three-col" style="font-size:11px">
+      <div>
+        <div class="check-row"><div class="check-box check-filled"></div><span>Full legal name</span></div>
+        <div class="check-row"><div class="check-box check-filled"></div><span>Date of birth &amp; age</span></div>
+        <div class="check-row"><div class="check-box check-filled"></div><span>Current home address</span></div>
+      </div>
+      <div>
+        <div class="check-row"><div class="check-box check-filled"></div><span>Phone number &amp; email</span></div>
+        <div class="check-row"><div class="check-box check-filled"></div><span>Current employer / occupation</span></div>
+        <div class="check-row"><div class="check-box check-filled"></div><span>Educational background</span></div>
+      </div>
+      <div>
+        <div class="check-row"><div class="check-box check-filled"></div><span>Region / district of operation</span></div>
+        <div class="check-row"><div class="check-box check-filled"></div><span>Shea Butter value chain experience</span></div>
+      </div>
+    </div>
+    <div class="notice notice-green" style="margin-top:12px">
+      <span class="notice-icon">✓</span>
+      <span>On form submission, account + profile data is saved to the central database. Candidate is automatically advanced to Stage 2.</span>
+    </div>
+  </div>
+
+
+  <!-- ═══ STAGE 2 ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">Stage 2</span>
+        <h2>Document Upload &amp; Validation</h2>
+      </div>
+      <p>Candidate uploads all required files — system validates completeness before allowing progression</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="screens-row">
+
+      <!-- Upload screen -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/documents</div>
+        </div>
+        <div class="screen-label">Screen D — Document Upload Portal</div>
+        <div class="screen-content">
+          <p class="ui-heading">Upload required documents</p>
+          <p class="ui-sub">All fields required — you cannot proceed with missing files</p>
+          <div class="divider-label"><div class="divider-line"></div><span style="font-size:9px">Identity &amp; Work</span><div class="divider-line"></div></div>
+          <div class="ui-field-label">Ghana Card (National ID) *</div>
+          <div class="ui-field" style="justify-content:space-between">📎 Upload file <span class="pill pill-amber" style="font-size:9px">Required</span></div>
+          <div class="ui-field-label">CV / Resume *</div>
+          <div class="ui-field" style="justify-content:space-between">📎 Upload file <span class="pill pill-amber" style="font-size:9px">Required</span></div>
+          <div class="ui-field-label">Cover Letter *</div>
+          <div class="ui-field" style="justify-content:space-between">📎 Upload file <span class="pill pill-amber" style="font-size:9px">Required</span></div>
+          <div class="divider-label"><div class="divider-line"></div><span style="font-size:9px">Experience</span><div class="divider-line"></div></div>
+          <div class="ui-field-label">Job Reference Letter *</div>
+          <div class="ui-field" style="justify-content:space-between">📎 Upload file <span class="pill pill-amber" style="font-size:9px">Required</span></div>
+          <div class="ui-field-label">Relevant Experience Evidence *</div>
+          <div class="ui-field" style="justify-content:space-between">📎 Upload file <span class="pill pill-amber" style="font-size:9px">Required</span></div>
+          <div class="ui-btn-row"><div class="ui-btn primary">Submit documents →</div></div>
+        </div>
+      </div>
+
+      <!-- Guarantor details -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/documents</div>
+        </div>
+        <div class="screen-label">Screen D (cont.) — Guarantor Details</div>
+        <div class="screen-content">
+          <p class="ui-heading">Guarantor information</p>
+          <p class="ui-sub">Your guarantor will receive a separate verification request</p>
+          <div class="ui-field-label">Guarantor's full name *</div>
+          <div class="ui-field">Legal name</div>
+          <div class="ui-field-label">Guarantor's email address *</div>
+          <div class="ui-field">📧 guarantor@email.com</div>
+          <div class="ui-field-label">Guarantor's phone number *</div>
+          <div class="ui-field">+233 ___</div>
+          <div class="ui-field-label">Guarantor's ID document *</div>
+          <div class="ui-field" style="justify-content:space-between">📎 Upload Ghana Card copy <span class="pill pill-amber" style="font-size:9px">Required</span></div>
+          <div class="notice notice-amber" style="margin-top:6px">
+            <span>⚠</span>
+            <span>Guarantor will be emailed independently to verify their own identity. This step is non-optional.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Error state -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/documents</div>
+        </div>
+        <div class="screen-label">Screen E — Gating Error State</div>
+        <div class="screen-content">
+          <p class="ui-heading" style="color:var(--red)">⚠ Submission blocked</p>
+          <p class="ui-sub">The following documents are missing or invalid:</p>
+          <div class="notice notice-red" style="margin-top:6px;margin-bottom:8px">
+            <span>✗</span>
+            <div>
+              <div>CV / Resume — missing</div>
+              <div>Job Reference Letter — wrong format (must be PDF)</div>
+            </div>
+          </div>
+          <p style="font-size:10px;color:var(--gray-600);margin-bottom:8px">Please fix the issues above and resubmit. You cannot proceed to identity verification until all documents are accepted.</p>
+          <div class="ui-btn primary" style="display:inline-block;font-size:11px;padding:5px 14px;border-radius:4px;font-weight:600;color:white;background:var(--red);border:none">Fix &amp; resubmit</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="logic-box">
+      <h4>⚙ Gating Logic — No skipping allowed</h4>
+      <div class="logic-row"><span class="logic-label">Validation:</span><span>System checks all required slots are filled and files match accepted formats (PDF, JPG, PNG). Missing or wrong-format files block progression.</span></div>
+      <div class="logic-row"><span class="logic-label">On error:</span><span>Candidate is shown exactly which documents need fixing. They cannot reach Stage 3 (KYC) until 100% of required documents pass validation.</span></div>
+      <div class="logic-row"><span class="logic-label">On success:</span><span>All documents stored in database, candidate automatically advanced to Stage 3 — KYC verification.</span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ STAGE 3 ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">Stage 3</span>
+        <h2>KYC — Ghana Card Verification</h2>
+      </div>
+      <p>Ghana National ID submitted to Smile Identity / NIA API for real-time database check</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="screens-row">
+
+      <!-- KYC pending -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/kyc</div>
+        </div>
+        <div class="screen-label">Screen F — KYC In Progress</div>
+        <div class="screen-content">
+          <p class="ui-heading">Identity verification</p>
+          <p class="ui-sub">Checking your Ghana Card against the NIA database…</p>
+          <div style="background:var(--gray-100);border:var(--border);border-radius:4px;padding:12px;text-align:center;margin:10px 0">
+            <div style="font-size:24px;margin-bottom:6px">🔍</div>
+            <p style="font-size:11px;color:var(--gray-600)">Verifying: Name · DOB · ID Number</p>
+            <p style="font-size:10px;color:var(--gray-400);margin-top:4px">This usually takes &lt;30 seconds</p>
+          </div>
+          <div class="notice notice-blue">
+            <span>ℹ</span>
+            <span>Your ID is being checked against the Ghana NIA database via a secure API. No action needed.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KYC pass -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/kyc</div>
+        </div>
+        <div class="screen-label">Screen G — KYC Passed</div>
+        <div class="screen-content">
+          <div style="text-align:center;padding:16px 0 10px">
+            <div style="width:44px;height:44px;background:var(--green-pale);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;font-size:20px">✓</div>
+            <p class="ui-heading" style="color:var(--green)">Identity verified</p>
+            <p class="ui-sub">Your Ghana Card matches the national database</p>
+          </div>
+          <div style="background:var(--green-pale);border:1px solid var(--green-mid);border-radius:4px;padding:8px 10px;font-size:10px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span>Name match</span><span class="pill pill-green" style="font-size:9px">✓ Verified</span></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:3px"><span>Date of birth</span><span class="pill pill-green" style="font-size:9px">✓ Verified</span></div>
+            <div style="display:flex;justify-content:space-between"><span>ID number</span><span class="pill pill-green" style="font-size:9px">✓ Verified</span></div>
+          </div>
+          <div class="notice notice-green" style="margin-top:8px">
+            <span>→</span>
+            <span>Proceeding automatically to Stage 4 — Guarantor Verification</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KYC fail -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/kyc</div>
+        </div>
+        <div class="screen-label">Screen H — KYC Failed</div>
+        <div class="screen-content">
+          <div style="text-align:center;padding:10px 0 8px">
+            <div style="font-size:22px;margin-bottom:6px">⚠</div>
+            <p class="ui-heading" style="color:var(--red)">Verification failed</p>
+            <p class="ui-sub">Your Ghana Card could not be verified</p>
+          </div>
+          <div class="notice notice-red">
+            <span>✗</span>
+            <div style="font-size:10px">
+              <div>One or more fields do not match the national database:</div>
+              <div style="margin-top:3px">· Name mismatch or ID number invalid</div>
+              <div>· Application is halted and flagged for HR review</div>
+            </div>
+          </div>
+          <p style="font-size:10px;color:var(--gray-600);margin-top:8px">Our HR team will review your case within 3 business days. You will be contacted at your registered email.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="logic-box">
+      <h4>⚙ API Integration — Smile Identity / NIA</h4>
+      <div class="logic-row"><span class="logic-label">Input:</span><span>Ghana National ID number + uploaded Ghana Card image (collected in Stage 1 &amp; 2)</span></div>
+      <div class="logic-row"><span class="logic-label">Check:</span><span>Real-time cross-reference against Ghana NIA database — verifies name, date of birth, and ID number</span></div>
+      <div class="logic-row"><span class="logic-label">Pass:</span><span>Candidate automatically advanced to Stage 4. HR is not involved at this step.</span></div>
+      <div class="logic-row"><span class="logic-label">Fail:</span><span>Application halted. Candidate shown error. Case flagged in HR dashboard for manual review.</span></div>
+      <div class="logic-row"><span class="logic-label">Cost:</span><span>$0.50 – $2.00 per verification (Smile Identity pricing)</span></div>
+    </div>
+  </div>
+
+
+  <!-- ═══ STAGE 4 ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">Stage 4</span>
+        <h2>Guarantor Verification</h2>
+      </div>
+      <p>System emails the guarantor — guarantor independently verifies their own identity and signs digitally</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <!-- Flow -->
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-step-num">Step 1</div>
+        <div class="flow-step-label">Candidate submits</div>
+        <div class="flow-step-desc">Guarantor email provided in Stage 2</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">Step 2</div>
+        <div class="flow-step-label">Auto-email sent</div>
+        <div class="flow-step-desc">System sends verification request via SendGrid</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">Step 3</div>
+        <div class="flow-step-label">Guarantor verifies ID</div>
+        <div class="flow-step-desc">Guarantor submits own Ghana Card for NIA check</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">Step 4</div>
+        <div class="flow-step-label">Digital signature</div>
+        <div class="flow-step-desc">Guarantor signs &amp; submits form digitally</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step" style="background:var(--green-pale);border-color:var(--green-mid)">
+        <div class="flow-step-num" style="color:var(--green)">Done</div>
+        <div class="flow-step-label">Candidate advances</div>
+        <div class="flow-step-desc">Proceeds to Stage 5</div>
+      </div>
+    </div>
+
+    <div class="screens-row" style="margin-top:4px">
+
+      <!-- Guarantor email -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">Email — Guarantor inbox</div>
+        </div>
+        <div class="screen-label">Screen I — Guarantor Email (auto-sent)</div>
+        <div class="screen-content">
+          <div style="border:var(--border);border-radius:4px;padding:10px;background:white">
+            <div style="font-size:10px;color:var(--gray-600);margin-bottom:6px">
+              <div><b>From:</b> noreply@vitara.ag</div>
+              <div><b>Subject:</b> Action required — Guarantor identity verification for [Candidate Name]</div>
+            </div>
+            <div class="ui-divider"></div>
+            <p style="font-size:11px;margin-bottom:8px">You have been listed as a guarantor for a Vitara field agent application. To complete this, please:</p>
+            <div class="check-row" style="margin-bottom:3px"><div class="check-box"></div><span style="font-size:10px">Verify your Ghana Card via the link below</span></div>
+            <div class="check-row" style="margin-bottom:8px"><div class="check-box"></div><span style="font-size:10px">Sign the digital guarantor form</span></div>
+            <div class="ui-btn primary" style="display:block;text-align:center;font-size:11px;padding:6px;border-radius:4px;">Verify my identity →</div>
+            <p style="font-size:9px;color:var(--gray-400);margin-top:6px;text-align:center">Link expires in 7 days. If you did not expect this, please ignore.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Guarantor portal -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/guarantor/verify</div>
+        </div>
+        <div class="screen-label">Screen J — Guarantor Portal</div>
+        <div class="screen-content">
+          <p class="ui-heading">Guarantor identity check</p>
+          <p class="ui-sub">You are verifying as guarantor for a Vitara application</p>
+          <div class="ui-field-label">Your Ghana Card number *</div>
+          <div class="ui-field">GHA-XXXXXXXXX-X</div>
+          <div class="ui-field-label">Upload Ghana Card image *</div>
+          <div class="ui-field" style="justify-content:space-between">📎 Upload front of card <span class="pill pill-amber" style="font-size:9px">Required</span></div>
+          <div class="ui-field-label">Digital signature *</div>
+          <div style="background:var(--gray-100);border:var(--border);border-radius:4px;height:40px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--gray-400);margin-bottom:6px">Sign here (touch or draw)</div>
+          <div class="notice notice-blue" style="margin-bottom:6px">
+            <span>ℹ</span>
+            <span>Your identity will be independently verified via the Ghana NIA database</span>
+          </div>
+          <div class="ui-btn-row"><div class="ui-btn primary">Submit &amp; sign →</div></div>
+        </div>
+      </div>
+
+      <!-- Candidate wait state -->
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/status</div>
+        </div>
+        <div class="screen-label">Screen K — Candidate Waiting State</div>
+        <div class="screen-content">
+          <p class="ui-heading">Waiting for guarantor</p>
+          <p class="ui-sub">Your application is on hold until your guarantor completes verification</p>
+          <div style="background:var(--gray-100);border:var(--border);border-radius:4px;padding:10px;margin:8px 0">
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">
+              <span>Guarantor email sent</span><span class="pill pill-green" style="font-size:9px">✓ Done</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px">
+              <span>Guarantor verified ID</span><span class="pill pill-amber" style="font-size:9px">Pending</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px">
+              <span>Guarantor signed form</span><span class="pill pill-gray" style="font-size:9px">Waiting</span>
+            </div>
+          </div>
+          <p style="font-size:10px;color:var(--gray-600)">No response after 7 days: your application will be flagged for HR review.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="logic-box">
+      <h4>⚙ Why guarantor ID verification is non-negotiable</h4>
+      <p style="font-size:11px;color:var(--gray-800)">Without independent identity verification, candidates could list fake guarantors — friends, family, or fictional people. By requiring the guarantor to separately verify their own Ghana Card via the NIA database, the system ensures the guarantor is a real, traceable person. This protects Vitara when deploying field agents across communities where financial and reputational accountability is critical.</p>
+      <div style="margin-top:8px;display:flex;gap:16px;font-size:11px">
+        <div><b>Non-response:</b> Application flagged for manual HR review</div>
+        <div><b>Failed ID:</b> Application halted, HR notified</div>
+        <div><b>Success:</b> Auto-advance to Stage 5</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ STAGE 5 ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">Stage 5</span>
+        <h2>Screening — Path A vs Path B</h2>
+      </div>
+      <p>Fully verified candidates forwarded to HR. Optional AI scoring layer available as Phase 2 upgrade.</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="path-grid">
+      <div class="path-card recommended">
+        <div style="margin-bottom:8px"><span class="pill pill-green">Recommended — Start here</span></div>
+        <p class="path-title">Path A — Core (Lower cost)</p>
+        <p style="font-size:10px;color:var(--gray-600);margin-bottom:10px">Document-based HR forwarding</p>
+        <div class="path-item"><span style="color:var(--green)">✓</span><span>Candidate profile automatically forwarded to HR dashboard once all 4 stages pass</span></div>
+        <div class="path-item"><span style="color:var(--green)">✓</span><span>HR team sees all fully qualified applicants in one place</span></div>
+        <div class="path-item"><span style="color:var(--green)">✓</span><span>HR decides who to interview — in person or virtually</span></div>
+        <div class="path-item"><span style="color:var(--green)">✓</span><span>Candidate receives: "Thank you, we'll be in touch"</span></div>
+        <div class="notice notice-green" style="margin-top:8px">No extra tooling needed. Build once, works immediately.</div>
+      </div>
+      <div class="path-card">
+        <div style="margin-bottom:8px"><span class="pill pill-amber">Phase 2 — Add when ready</span></div>
+        <p class="path-title">Path B — Enhanced (+ AI layer)</p>
+        <p style="font-size:10px;color:var(--gray-600);margin-bottom:10px">AI-assisted candidate scoring</p>
+        <div class="path-item"><span style="color:#856404">→</span><span>AI model scores each verified applicant against pre-set criteria (Shea experience, location, qualifications)</span></div>
+        <div class="path-item"><span style="color:var(--red)">✗</span><span>Below 60%: automatic rejection email within 3 days</span></div>
+        <div class="path-item"><span style="color:var(--green)">✓</span><span>Above 60%: profile forwarded to HR for human review &amp; interview</span></div>
+        <div class="notice notice-amber" style="margin-top:8px">Setup cost: $500–$2,000+ plus API costs per batch. Build on top of Path A — no rebuild needed.</div>
+      </div>
+    </div>
+
+    <div class="screens-row" style="margin-top:16px">
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/status</div>
+        </div>
+        <div class="screen-label">Screen L — Path A Candidate (forwarded)</div>
+        <div class="screen-content">
+          <div style="text-align:center;padding:10px 0 6px">
+            <div style="font-size:22px;margin-bottom:6px">✅</div>
+            <p class="ui-heading" style="color:var(--green)">Application complete</p>
+          </div>
+          <div style="background:var(--green-pale);border:1px solid var(--green-mid);border-radius:4px;padding:8px 10px;font-size:10px;margin-bottom:8px">
+            <div class="check-row"><div class="check-box check-filled"></div><span>Profile &amp; account created</span></div>
+            <div class="check-row"><div class="check-box check-filled"></div><span>Documents uploaded &amp; validated</span></div>
+            <div class="check-row"><div class="check-box check-filled"></div><span>KYC identity verified</span></div>
+            <div class="check-row"><div class="check-box check-filled"></div><span>Guarantor verified &amp; signed</span></div>
+          </div>
+          <p style="font-size:10px;color:var(--gray-600)">Thank you for your application. Our HR team will be in touch shortly.</p>
+        </div>
+      </div>
+
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/status</div>
+        </div>
+        <div class="screen-label">Screen M — Path B: AI score passed</div>
+        <div class="screen-content">
+          <div style="text-align:center;padding:8px 0 4px">
+            <p class="ui-heading" style="color:var(--green)">Screening passed</p>
+            <p class="ui-sub">Your application has been shortlisted</p>
+          </div>
+          <div style="background:var(--gray-100);border:var(--border);border-radius:4px;padding:8px 10px;margin:8px 0;text-align:center">
+            <div style="font-size:22px;font-weight:700;color:var(--green)">74%</div>
+            <div style="font-size:10px;color:var(--gray-600)">Screening score (≥60% required)</div>
+          </div>
+          <div class="notice notice-green">
+            <span>→</span><span>Profile forwarded to HR for interview scheduling</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="screen-frame">
+        <div class="screen-chrome">
+          <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+          <div class="chrome-url">vitara.ag/apply/status</div>
+        </div>
+        <div class="screen-label">Screen N — Path B: AI score failed</div>
+        <div class="screen-content">
+          <div style="text-align:center;padding:8px 0 4px">
+            <p class="ui-heading" style="color:var(--red)">Application unsuccessful</p>
+            <p class="ui-sub">Your profile did not meet the minimum threshold for this role</p>
+          </div>
+          <div style="background:var(--gray-100);border:var(--border);border-radius:4px;padding:8px 10px;margin:8px 0;text-align:center">
+            <div style="font-size:22px;font-weight:700;color:var(--red)">42%</div>
+            <div style="font-size:10px;color:var(--gray-600)">Below 60% threshold</div>
+          </div>
+          <div class="notice notice-red">
+            <span>✗</span><span>Rejection email sent automatically. You may reapply in a future cycle.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ HR DASHBOARD ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">HR Dashboard</span>
+        <h2>Admin Pipeline View</h2>
+      </div>
+      <p>Real-time view of all candidates across every stage — the 3-person HR team's command centre</p>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="screen-frame" style="margin-bottom:16px">
+      <div class="screen-chrome">
+        <div class="chrome-dots"><div class="chrome-dot"></div><div class="chrome-dot"></div><div class="chrome-dot"></div></div>
+        <div class="chrome-url">vitara.ag/admin/dashboard</div>
+      </div>
+      <div class="screen-label">Screen O — HR Admin Dashboard</div>
+      <div class="screen-content" style="padding:12px 16px">
+
+        <div class="dash-header">
+          <p style="font-weight:700;font-size:13px">Recruitment Pipeline — 2026 Cycle</p>
+          <div style="display:flex;gap:6px">
+            <span class="pill pill-gray">Filter: All stages</span>
+            <span class="pill pill-blue">Export CSV</span>
+          </div>
+        </div>
+
+        <div class="dash-stats">
+          <div class="dash-stat"><div class="dash-stat-num">142</div><div class="dash-stat-label">Total applicants</div></div>
+          <div class="dash-stat"><div class="dash-stat-num" style="color:#856404">38</div><div class="dash-stat-label">Awaiting guarantor</div></div>
+          <div class="dash-stat"><div class="dash-stat-num" style="color:var(--blue)">27</div><div class="dash-stat-label">Ready for interview</div></div>
+          <div class="dash-stat"><div class="dash-stat-num" style="color:var(--red)">11</div><div class="dash-stat-label">Flagged for review</div></div>
+        </div>
+
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>Candidate</th>
+              <th>Region</th>
+              <th>Stage</th>
+              <th>KYC</th>
+              <th>Guarantor</th>
+              <th>Score</th>
+              <th>Progress</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>Ama Owusu</b></td>
+              <td>Ashanti</td>
+              <td><span class="pill pill-blue" style="font-size:9px">Interview</span></td>
+              <td><span class="pill pill-green" style="font-size:9px">✓</span></td>
+              <td><span class="pill pill-green" style="font-size:9px">✓</span></td>
+              <td>81%</td>
+              <td><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:100%"></div></div></td>
+              <td><span class="pill pill-blue" style="font-size:9px;cursor:default">Schedule</span></td>
+            </tr>
+            <tr>
+              <td><b>Fatima Diallo</b></td>
+              <td>Northern</td>
+              <td><span class="pill pill-blue" style="font-size:9px">Interview</span></td>
+              <td><span class="pill pill-green" style="font-size:9px">✓</span></td>
+              <td><span class="pill pill-green" style="font-size:9px">✓</span></td>
+              <td>68%</td>
+              <td><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:100%"></div></div></td>
+              <td><span class="pill pill-blue" style="font-size:9px;cursor:default">Schedule</span></td>
+            </tr>
+            <tr>
+              <td><b>Yaa Mensah</b></td>
+              <td>Brong-Ahafo</td>
+              <td><span class="pill pill-amber" style="font-size:9px">Guarantor</span></td>
+              <td><span class="pill pill-green" style="font-size:9px">✓</span></td>
+              <td><span class="pill pill-amber" style="font-size:9px">Pending</span></td>
+              <td>—</td>
+              <td><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:75%"></div></div></td>
+              <td><span class="pill pill-gray" style="font-size:9px">Waiting</span></td>
+            </tr>
+            <tr>
+              <td><b>Abena Kyei</b></td>
+              <td>Western</td>
+              <td><span class="pill pill-red" style="font-size:9px">Flagged</span></td>
+              <td><span class="pill pill-red" style="font-size:9px">Failed</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:30%;background:var(--red)"></div></div></td>
+              <td><span class="pill pill-red" style="font-size:9px;cursor:default">Review</span></td>
+            </tr>
+            <tr>
+              <td><b>Comfort Asante</b></td>
+              <td>Volta</td>
+              <td><span class="pill pill-gray" style="font-size:9px">Docs</span></td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td><div class="progress-bar" style="width:80px"><div class="progress-fill" style="width:20%"></div></div></td>
+              <td><span class="pill pill-gray" style="font-size:9px">Waiting</span></td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="annotation-row">
+      <div class="anno-section">
+        <h4>Dashboard features</h4>
+        <div class="anno-item">Live stage tracking per candidate<span>Stages 1–5 updated in real-time as candidates progress</span></div>
+        <div class="anno-item">KYC &amp; guarantor status badges<span>Instant visibility on verification outcomes</span></div>
+        <div class="anno-item">AI score column (Path B)<span>Only shown when Path B is enabled</span></div>
+        <div class="anno-item">Flag queue for manual review<span>KYC failures and guarantor non-responses surface here</span></div>
+        <div class="anno-item">CSV export<span>Full candidate list exportable for reporting</span></div>
+      </div>
+      <div class="anno-section">
+        <h4>HR actions available</h4>
+        <div class="anno-item">View full candidate profile + documents<span>All uploaded files accessible in one click</span></div>
+        <div class="anno-item">Schedule interview (in-person or virtual)<span>Interview booking integrated into the dashboard</span></div>
+        <div class="anno-item">Manually override flagged cases<span>HR can approve or reject edge cases</span></div>
+        <div class="anno-item">Search &amp; filter by stage, region, score<span>Quickly surface the right candidates</span></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ═══ END-TO-END FLOW ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">Full Flow</span>
+        <h2>End-to-End Candidate Journey</h2>
+      </div>
+      <p>All 7 steps from link-shared to interview — including automatic rejection paths</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="flow" style="flex-wrap:wrap;gap:8px">
+      <div class="flow-step"><div class="flow-step-num">1</div><div class="flow-step-label">Link shared</div><div class="flow-step-desc">Social media, referrals, job boards</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="flow-step-num">2</div><div class="flow-step-label">Account created</div><div class="flow-step-desc">Profile &amp; personal data collected</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="flow-step-num">3</div><div class="flow-step-label">Docs uploaded</div><div class="flow-step-desc">All files submitted &amp; validated</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="flow-step-num">4</div><div class="flow-step-label">KYC verified</div><div class="flow-step-desc">Ghana Card vs NIA database</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="flow-step-num">5</div><div class="flow-step-label">Guarantor signs</div><div class="flow-step-desc">Verifies identity &amp; signs digitally</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="flow-step-num">6</div><div class="flow-step-label">HR dashboard</div><div class="flow-step-desc">Qualified candidates forwarded</div></div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step"><div class="flow-step-num">7</div><div class="flow-step-label">Interview</div><div class="flow-step-desc">In-person or virtual</div></div>
+    </div>
+
+    <div style="margin-top:12px">
+      <p style="font-size:11px;font-weight:700;color:var(--red);margin-bottom:6px">✗ Automatic rejection paths</p>
+      <table class="specs-table">
+        <thead><tr><th>Stage</th><th>Trigger</th><th>System action</th></tr></thead>
+        <tbody>
+          <tr><td>Stage 2 — Docs</td><td>Missing or incorrect documents</td><td>Candidate blocked, shown exact issue, prompted to resubmit</td></tr>
+          <tr><td>Stage 3 — KYC</td><td>Invalid Ghana Card or name mismatch</td><td>Application halted, error shown, case flagged for HR review</td></tr>
+          <tr><td>Stage 4 — Guarantor</td><td>Non-response after 7 days or failed ID</td><td>Application flagged for manual HR review</td></tr>
+          <tr><td>Path B — AI scoring</td><td>Score below 60%</td><td>Automatic rejection email sent within 3 business days</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- ═══ COSTS ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">Costs</span>
+        <h2>Cost Implications — Ghana Context</h2>
+      </div>
+      <p>Path A builds the full core system. Path B adds AI scoring on top — no rebuild required.</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <table class="cost-table">
+      <thead>
+        <tr><th style="width:35%">Component</th><th>Path A (Core)</th><th>Path B (+ AI scoring)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>App / website integration (dev)</td><td class="path-a">~4–8 weeks developer time</td><td>Same</td></tr>
+        <tr><td>KYC API (Smile Identity / NIA)</td><td class="path-a">$0.50 – $2.00 per verification</td><td>Same</td></tr>
+        <tr><td>Email automation (guarantor form)</td><td class="path-a">Free – low (SendGrid free tier)</td><td>Same</td></tr>
+        <tr><td>Document validation logic</td><td class="path-a">One-time dev build cost</td><td>Same</td></tr>
+        <tr><td>AI scoring model</td><td style="color:var(--gray-400)">Not included</td><td class="path-b">$500 – $2,000+ setup + API costs/batch</td></tr>
+      </tbody>
+    </table>
+    <div class="notice notice-green" style="margin-top:12px">
+      <span>💡</span>
+      <span><b>Recommendation:</b> Start with Path A. The core system alone will drastically reduce HR workload and cut time-to-hire. Once ROI is proven, Path B (AI scoring) can be added as a Phase 2 upgrade without rebuilding anything.</span>
+    </div>
+  </div>
+
+
+  <!-- ═══ IMPACT ═══ -->
+  <div class="section-header">
+    <div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <span class="stage-badge">Impact</span>
+        <h2>What Vitara Gains</h2>
+      </div>
+      <p>From 2 months per hire and 0 automation — to a scalable, fraud-resistant pipeline</p>
+    </div>
+  </div>
+  <div class="section-body">
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-num">01</div>
+        <div class="impact-title">HR workload slashed</div>
+        <div class="impact-desc">System handles screening, ID checks, and guarantor verification automatically. HR only sees candidates who have passed every gate.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">02</div>
+        <div class="impact-title">Scales without extra headcount</div>
+        <div class="impact-desc">The same 3-person HR team can now manage hundreds of applicants per cycle without being overwhelmed.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">03</div>
+        <div class="impact-title">Zero forged documents</div>
+        <div class="impact-desc">Ghana Card KYC + guarantor ID verification closes the two biggest fraud risks in field agent recruitment.</div>
+      </div>
+      <div class="impact-card">
+        <div class="impact-num">04</div>
+        <div class="impact-title">Full pipeline visibility</div>
+        <div class="impact-desc">Real-time admin dashboard gives HR a live view of every applicant's stage, status, and documents in one place.</div>
+      </div>
+    </div>
+
+    <table class="specs-table" style="margin-top:16px">
+      <thead><tr><th>Metric</th><th>Before (manual)</th><th>After (with MVP)</th></tr></thead>
+      <tbody>
+        <tr><td>HR staff managing recruitment</td><td>3 (fully occupied)</td><td>3 (partially automated)</td></tr>
+        <tr><td>Time to hire one agent</td><td>~2 months</td><td>Days to weeks</td></tr>
+        <tr><td>Automation in place</td><td>0</td><td>Full pipeline automated</td></tr>
+        <tr><td>ID fraud risk</td><td>High (manual check)</td><td>Near-zero (NIA API)</td></tr>
+        <tr><td>Audit trail</td><td>None</td><td>Complete per-candidate log</td></tr>
+        <tr><td>Scalability</td><td>~100 candidates max</td><td>Unlimited</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="doc-footer">
+    Vitara Recruitment Process Automation · Low-Fidelity MVP Prototype · Group 6 · 2026<br>
+    Godfred Boateng · Joshua Unger · Chiamaka Julliet Alufuo · Maureen John-Olorunfemi<br>
+    vitara.ag · Agricultural E-Commerce – West Africa
+  </div>
+
+</div>
+</body>
+</html>
