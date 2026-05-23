@@ -33,7 +33,13 @@ export async function POST(req: NextRequest) {
     .join(' ') || 'Applicant'
 
   if (email) {
-    await sendApplicationSubmittedEmail(email, name)
+    try {
+      await sendApplicationSubmittedEmail(email, name)
+    } catch (emailErr) {
+      // Email is best-effort — missing API key or send failure must not
+      // block the applicant's submission confirmation.
+      console.error('Submission email failed:', emailErr)
+    }
   }
 
   return NextResponse.json({ success: true })
