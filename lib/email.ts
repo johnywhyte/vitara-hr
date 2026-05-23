@@ -1,6 +1,18 @@
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy singleton — instantiated on first use so the module can be imported
+// at build time even when RESEND_API_KEY is not present in the build env.
+let _resend: Resend | null = null
+function getResend() {
+  if (!_resend) {
+    if (!process.env.RESEND_API_KEY) {
+      throw new Error('RESEND_API_KEY environment variable is not set')
+    }
+    _resend = new Resend(process.env.RESEND_API_KEY)
+  }
+  return _resend
+}
+
 const FROM = process.env.EMAIL_FROM ?? 'Vitara Recruitment <no-reply@vitara.ag>'
 const BASE_URL = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
 
@@ -42,7 +54,7 @@ function baseHtml(content: string) {
 }
 
 export async function sendApplicationSubmittedEmail(to: string, name: string) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: 'Application Received — Vitara Recruitment',
@@ -60,7 +72,7 @@ export async function sendApplicationSubmittedEmail(to: string, name: string) {
 }
 
 export async function sendApplicationApprovedEmail(to: string, name: string) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: 'Congratulations! Application Approved — Vitara Recruitment',
@@ -85,7 +97,7 @@ export async function sendApplicationRejectedEmail(
   name: string,
   reason: string
 ) {
-  return resend.emails.send({
+  return getResend().emails.send({
     from: FROM,
     to,
     subject: 'Application Update — Vitara Recruitment',
