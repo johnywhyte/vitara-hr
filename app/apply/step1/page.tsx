@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { personalDetailsSchema, type PersonalDetailsFormData } from '@/lib/validations'
 import { GHANA_REGIONS } from '@/lib/ghana-regions'
@@ -16,6 +17,7 @@ import { Select } from '@/components/ui/select'
 import { Save, AlertTriangle } from 'lucide-react'
 
 export default function Step1Page() {
+  const router = useRouter()
   const [applicationId, setApplicationId] = useState<string | null>(null)
   const [userId, setUserId] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
@@ -130,8 +132,7 @@ export default function Step1Page() {
     if (error) {
       setSaveError(error.message)
     } else {
-      setSaved(true)
-      setTimeout(() => setSaved(false), 3000)
+      router.push('/apply/step2')
     }
   }
 
@@ -189,6 +190,25 @@ export default function Step1Page() {
       </div>
 
       <form onSubmit={handleSubmit(onSave)} className="bg-white border border-t-0 border-[#DEE2E6] rounded-b-lg p-4 space-y-3.5">
+
+        {/* Validation error summary */}
+        {Object.keys(errors).length > 0 && (
+          <div className="p-3 bg-[#FFE5E5] border-l-4 border-[#C0392B] rounded-md">
+            <p className="text-xs font-bold text-[#C0392B] mb-1">Please fix the following before continuing:</p>
+            <ul className="list-disc list-inside space-y-0.5">
+              {Object.values(errors).map((err, i) => (
+                <li key={i} className="text-[11px] text-[#C0392B]">{err?.message as string}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {saveError && (
+          <div className="p-3 bg-[#FFE5E5] border-l-4 border-[#C0392B] rounded-md">
+            <p className="text-xs font-bold text-[#C0392B]">Save failed</p>
+            <p className="text-[11px] text-[#C0392B] mt-0.5">{saveError}</p>
+          </div>
+        )}
 
         {/* Name row */}
         <div className="grid grid-cols-2 gap-3">
@@ -313,8 +333,7 @@ export default function Step1Page() {
           />
         </div>
 
-        {/* Save status */}
-        {saveError && <p className="text-xs text-[#C0392B]">{saveError}</p>}
+        {/* Save progress success */}
         {saved && (
           <div className="p-2.5 bg-[#D8F3DC] border-l-4 border-[#52B788] rounded text-xs text-[#2D6A4F] font-semibold">
             Progress saved successfully

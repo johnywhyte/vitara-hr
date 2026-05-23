@@ -25,7 +25,7 @@ export default async function ApplicationsListPage({
     .from('applications')
     .select(`
       id, status, submitted_at, created_at, updated_at,
-      profiles (email),
+      profiles!applications_user_id_fkey (email),
       applicant_details (first_name, last_name, phone_number, region_id)
     `)
     .neq('status', 'draft')

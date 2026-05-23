@@ -29,7 +29,7 @@ export default async function AdminDashboard() {
     .from('applications')
     .select(`
       id, status, submitted_at, created_at,
-      profiles (email),
+      profiles!applications_user_id_fkey (email),
       applicant_details (first_name, last_name)
     `)
     .neq('status', 'draft')

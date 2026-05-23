@@ -55,7 +55,7 @@ export async function PATCH(
       id,
       status,
       rejection_reason,
-      profiles (email),
+      profiles!applications_user_id_fkey (email),
       applicant_details (first_name, last_name)
     `)
     .single()

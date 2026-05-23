@@ -29,7 +29,8 @@ export default function LoginPage() {
       setLoading(false)
       return
     }
-    router.push('/apply')
+    // Proxy will redirect admin → /admin, applicant → /apply
+    router.push('/')
     router.refresh()
   }
 
@@ -37,7 +38,7 @@ export default function LoginPage() {
     setLoading(true)
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback?next=/apply` },
+      options: { redirectTo: `${window.location.origin}/auth/callback?next=/` },
     })
   }
 

@@ -32,11 +32,22 @@ function FileLink({ label, url }: { label: string; url: string | null | undefine
       </div>
     )
   }
+  // Extract the storage path from the full URL so we can generate a signed URL
+  // URL format: .../storage/v1/object/public/application-files/<path>
+  //          or .../storage/v1/object/sign/application-files/<path>
+  const storagePath = url.includes('/application-files/')
+    ? url.split('/application-files/')[1]?.split('?')[0]
+    : null
+
+  const href = storagePath
+    ? `/api/file-url?path=${encodeURIComponent(storagePath)}`
+    : url
+
   return (
     <div className="flex items-center justify-between py-2 border-b border-[#F8F9FA] last:border-0">
       <span className="text-xs text-[#6C757D]">{label}</span>
       <a
-        href={url}
+        href={href}
         target="_blank"
         rel="noopener noreferrer"
         className="text-xs font-semibold text-[#2D6A4F] hover:underline flex items-center gap-1"
@@ -59,7 +70,7 @@ export default async function ApplicationDetailPage({
     .from('applications')
     .select(`
       *,
-      profiles (email),
+      profiles!applications_user_id_fkey (email),
       applicant_details (*),
       guarantor_details (*)
     `)

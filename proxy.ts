@@ -29,7 +29,7 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Protect /apply and /admin routes
+  // Protect /apply and /admin routes — redirect unauthenticated users to login
   if ((pathname.startsWith('/apply') || pathname.startsWith('/admin')) && !user) {
     const loginUrl = request.nextUrl.clone()
     loginUrl.pathname = '/login'
@@ -37,22 +37,30 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(loginUrl)
   }
 
-  // Protect admin routes — check role
-  if (pathname.startsWith('/admin') && user) {
+  // For authenticated users on protected routes, fetch their role once
+  if (user && (pathname.startsWith('/admin') || pathname.startsWith('/apply') || pathname === '/login' || pathname === '/signup' || pathname === '/')) {
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single()
 
-    if (profile?.role !== 'admin') {
+    const isAdmin = profile?.role === 'admin'
+
+    // Admins trying to access /apply or auth pages → send to /admin
+    if (isAdmin && (pathname.startsWith('/apply') || pathname === '/login' || pathname === '/signup' || pathname === '/')) {
+      return NextResponse.redirect(new URL('/admin', request.url))
+    }
+
+    // Non-admins trying to access /admin → send to /apply
+    if (!isAdmin && pathname.startsWith('/admin')) {
       return NextResponse.redirect(new URL('/apply', request.url))
     }
-  }
 
-  // Redirect authenticated users away from auth pages
-  if ((pathname === '/login' || pathname === '/signup') && user) {
-    return NextResponse.redirect(new URL('/apply', request.url))
+    // Non-admins on auth pages or landing → send to /apply
+    if (!isAdmin && (pathname === '/login' || pathname === '/signup' || pathname === '/') && user) {
+      return NextResponse.redirect(new URL('/apply', request.url))
+    }
   }
 
   return supabaseResponse

@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
 
   const { data } = await supabase
     .from('applications')
-    .select('id, profiles(email), applicant_details(first_name, last_name)')
+    .select('id, profiles!applications_user_id_fkey(email), applicant_details(first_name, last_name)')
     .eq('id', applicationId)
     .eq('user_id', user.id)
     .single()
