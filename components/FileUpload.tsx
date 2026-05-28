@@ -15,6 +15,7 @@ interface FileUploadProps {
   userId: string
   folder: string
   error?: string
+  disabled?: boolean
 }
 
 export function FileUpload({
@@ -27,6 +28,7 @@ export function FileUpload({
   userId,
   folder,
   error,
+  disabled,
 }: FileUploadProps) {
   const [uploading, setUploading] = useState(false)
   const [fileName, setFileName] = useState<string | null>(
@@ -95,13 +97,19 @@ export function FileUpload({
         >
           <CheckCircle className="w-4 h-4 text-[#71001D] shrink-0" />
           <span className="text-xs text-[#71001D] flex-1 truncate">{fileName}</span>
-          <button
-            type="button"
-            onClick={handleClear}
-            className="text-[#6C757D] hover:text-[#C0392B] transition-colors"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
+          {!disabled && (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="text-[#6C757D] hover:text-[#C0392B] transition-colors"
+            >
+              <X className="w-3.5 h-3.5" />
+            </button>
+          )}
+        </div>
+      ) : disabled ? (
+        <div className="flex items-center gap-2 p-2.5 rounded-md border bg-[#F8F9FA] border-[#DEE2E6]">
+          <span className="text-xs text-[#ADB5BD]">No file uploaded</span>
         </div>
       ) : (
         <div

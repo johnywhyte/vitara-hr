@@ -14,9 +14,10 @@ interface GhanaIdFieldProps {
   onChange: (val: string) => void
   onVerified?: (verified: boolean) => void
   error?: string
+  disabled?: boolean
 }
 
-export function GhanaIdField({ value, onChange, onVerified, error }: GhanaIdFieldProps) {
+export function GhanaIdField({ value, onChange, onVerified, error, disabled }: GhanaIdFieldProps) {
   const [status, setStatus] = useState<VerifyStatus>('idle')
   const [verifyMsg, setVerifyMsg] = useState('')
 
@@ -69,6 +70,7 @@ export function GhanaIdField({ value, onChange, onVerified, error }: GhanaIdFiel
           placeholder="GHA-XXXXXXXXX-X"
           maxLength={15}
           error={error}
+          disabled={disabled}
           className={cn(
             'pr-8',
             status === 'verified' && 'border-[#FFB000] focus:ring-[#FFB000]',

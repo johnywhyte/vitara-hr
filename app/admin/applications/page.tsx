@@ -7,10 +7,11 @@ import { ChevronRight, Search } from 'lucide-react'
 
 const STATUS_FILTERS: { label: string; value: string }[] = [
   { label: 'All', value: 'all' },
-  { label: 'Submitted', value: 'submitted' },
+  { label: 'Pending', value: 'pending' },
   { label: 'In Review', value: 'under_review' },
   { label: 'Approved', value: 'approved' },
   { label: 'Rejected', value: 'rejected' },
+  { label: 'Drafts', value: 'draft' },
 ]
 
 export default async function ApplicationsListPage({
@@ -28,11 +29,20 @@ export default async function ApplicationsListPage({
       profiles!applications_user_id_fkey (email),
       applicant_details (first_name, last_name, phone_number, region_id)
     `)
-    .neq('status', 'draft')
-    .order('submitted_at', { ascending: false })
 
-  if (status !== 'all') {
+  if (status === 'pending') {
+    // Pending = submitted but not yet reviewed
+    query = query.in('status', ['submitted', 'under_review'])
+      .order('submitted_at', { ascending: false })
+  } else if (status === 'draft') {
+    query = query.eq('status', 'draft')
+      .order('created_at', { ascending: false })
+  } else if (status === 'all') {
+    query = query.neq('status', 'draft')
+      .order('submitted_at', { ascending: false })
+  } else {
     query = query.eq('status', status)
+      .order('submitted_at', { ascending: false })
   }
 
   const { data: applications } = await query

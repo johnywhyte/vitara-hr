@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select } from '@/components/ui/select'
-import { Save, AlertTriangle } from 'lucide-react'
+import { Save, AlertTriangle, Clock, CheckCircle } from 'lucide-react'
 
 export default function Step1Page() {
   const router = useRouter()
@@ -26,6 +26,7 @@ export default function Step1Page() {
   const [ghanaIdVerified, setGhanaIdVerified] = useState(false)
   const [rejection, setRejection] = useState<{ reason: string; section: string } | null>(null)
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [appStatus, setAppStatus] = useState<string>('draft')
 
   const supabase = createClient()
 
@@ -81,6 +82,7 @@ export default function Step1Page() {
 
     if (!app) return
     setApplicationId(app.id)
+    setAppStatus(app.status)
     setIsSubmitted(app.status !== 'draft' && app.status !== 'rejected')
 
     if (app.rejection_reason && app.rejection_section === 'personal') {
@@ -162,6 +164,30 @@ export default function Step1Page() {
   return (
     <div>
       <ApplicationStepper currentStep={1} completedSteps={[]} />
+
+      {/* Status banners — shown when form is locked */}
+      {appStatus === 'approved' && (
+        <div className="mb-4 p-3 bg-[#FFF3CD] border-l-4 border-[#FFB000] rounded-md flex gap-2.5">
+          <CheckCircle className="w-4 h-4 text-[#71001D] shrink-0 mt-0.5" />
+          <div>
+            <p className="text-xs font-bold text-[#71001D]">Application Approved 🎉</p>
+            <p className="text-xs text-[#71001D]/80 mt-0.5">
+              Congratulations! Your application has been approved. You will hear from us shortly with next steps.
+            </p>
+          </div>
+        </div>
+      )}
+      {(appStatus === 'submitted' || appStatus === 'under_review') && (
+        <div className="mb-4 p-3 bg-[#FFF3CD] border-l-4 border-[#FFB000] rounded-md flex gap-2.5">
+          <Clock className="w-4 h-4 text-[#71001D] shrink-0 mt-0.5" />
+          <div>
+            <p className="text-xs font-bold text-[#71001D]">Application Under Review</p>
+            <p className="text-xs text-[#71001D]/80 mt-0.5">
+              Your application has been submitted and is being reviewed by our HR team. Editing is disabled until a decision is made.
+            </p>
+          </div>
+        </div>
+      )}
 
       {/* Rejection notice */}
       {rejection && (
@@ -273,6 +299,7 @@ export default function Step1Page() {
           onChange={(val) => setValue('ghana_id_number', val, { shouldValidate: true })}
           onVerified={setGhanaIdVerified}
           error={errors.ghana_id_number?.message}
+          disabled={isSubmitted}
         />
 
         {/* Region */}
@@ -304,6 +331,7 @@ export default function Step1Page() {
             userId={userId ?? 'unknown'}
             folder="cv"
             error={errors.cv_url?.message}
+            disabled={isSubmitted}
           />
         </div>
 
@@ -317,6 +345,7 @@ export default function Step1Page() {
             userId={userId ?? 'unknown'}
             folder="cover-letter"
             error={errors.cover_letter_url?.message}
+            disabled={isSubmitted}
           />
         </div>
 
@@ -330,6 +359,7 @@ export default function Step1Page() {
             userId={userId ?? 'unknown'}
             folder="ghana-id"
             error={errors.ghana_id_card_url?.message}
+            disabled={isSubmitted}
           />
         </div>
 
@@ -364,11 +394,6 @@ export default function Step1Page() {
           </Button>
         </div>
 
-        {isSubmitted && (
-          <p className="text-center text-[11px] text-[#6C757D]">
-            Application submitted — personal details are locked.
-          </p>
-        )}
       </form>
     </div>
   )

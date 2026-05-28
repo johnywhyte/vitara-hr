@@ -46,7 +46,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FCF5EB]">
+    <div className="min-h-screen flex">
+      {/* ── Left panel: form ───────────────────────────────── */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 py-10 bg-[#FCF5EB] min-h-screen">
       <div className="w-full max-w-sm">
         <div className="text-center mb-6">
           <Link href="/">
@@ -163,6 +165,29 @@ export default function LoginPage() {
             Sign Up
           </Link>
         </p>
+      </div>
+      </div>
+
+      {/* ── Right panel: hero image (hidden on mobile) ─────── */}
+      <div
+        className="hidden lg:flex flex-col justify-end w-[52%] relative bg-cover bg-center"
+        style={{ backgroundImage: "url('https://vitara.ag/wp-content/uploads/2025/10/Hero-banner-1-2048x1152.jpg')" }}
+      >
+        {/* dark gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-black/10" />
+        <div className="relative z-10 p-10 pb-12">
+          <img
+            src="https://vitara.ag/wp-content/uploads/2025/03/Vitara-Logo-FInal-white-1.png"
+            alt="Vitara"
+            className="h-10 mb-6 object-contain object-left"
+          />
+          <h2 className="text-3xl font-bold text-white leading-tight mb-3">
+            Growing prosperity<br />across rural Ghana.
+          </h2>
+          <p className="text-sm text-white/75 max-w-sm">
+            Join the Vitara team and help connect farming communities to global markets through technology and trade.
+          </p>
+        </div>
       </div>
     </div>
   );
