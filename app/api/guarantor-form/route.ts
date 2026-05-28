@@ -9,7 +9,7 @@ export async function GET() {
   const bold = await pdfDoc.embedFont(StandardFonts.HelveticaBold)
   const regular = await pdfDoc.embedFont(StandardFonts.Helvetica)
 
-  const green = rgb(0.176, 0.416, 0.31) // #2D6A4F
+  const green = rgb(0.443, 0, 0.114) // #71001D maroon
   const gray = rgb(0.42, 0.46, 0.49) // #6C757D
   const dark = rgb(0.2, 0.22, 0.25) // #343A40
   const black = rgb(0, 0, 0)
@@ -73,7 +73,7 @@ export async function GET() {
   y -= 10
   page.drawText('PURPOSE OF THIS FORM', { x: margin, y, size: 10, font: bold, color: green })
   y -= 4
-  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(0.72, 0.89, 0.78) })
+  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(1, 0.69, 0) })
   y -= 14
 
   drawText(
@@ -84,7 +84,7 @@ export async function GET() {
   y -= 10
   page.drawText('INSTRUCTIONS', { x: margin, y, size: 10, font: bold, color: green })
   y -= 4
-  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(0.72, 0.89, 0.78) })
+  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(1, 0.69, 0) })
   y -= 14
 
   const instructions = [
@@ -105,7 +105,7 @@ export async function GET() {
     x: margin, y, size: 10, font: bold, color: green,
   })
   y -= 4
-  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(0.72, 0.89, 0.78) })
+  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(1, 0.69, 0) })
   y -= 16
 
   const fields = [
@@ -122,7 +122,7 @@ export async function GET() {
   y -= 10
   page.drawText('SECTION B — GUARANTOR INFORMATION', { x: margin, y, size: 10, font: bold, color: green })
   y -= 4
-  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(0.72, 0.89, 0.78) })
+  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(1, 0.69, 0) })
   y -= 16
 
   const guarantorFields = [
@@ -145,7 +145,7 @@ export async function GET() {
   y -= 10
   page.drawText('SECTION C — GUARANTOR DECLARATION', { x: margin, y, size: 10, font: bold, color: green })
   y -= 4
-  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(0.72, 0.89, 0.78) })
+  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(1, 0.69, 0) })
   y -= 14
 
   const declaration = 'I, the undersigned, hereby declare that I personally know the applicant named above and can vouch for their good character, trustworthiness, and suitability for employment at Vitara Agricultural E-Commerce. I understand that by signing this form, I am taking responsibility as a guarantor for the applicant\'s conduct during their employment. I confirm that all information provided in this form is true and accurate to the best of my knowledge.'
@@ -155,7 +155,7 @@ export async function GET() {
   y -= 16
   page.drawText('SECTION D — SIGNATURE', { x: margin, y, size: 10, font: bold, color: green })
   y -= 4
-  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(0.72, 0.89, 0.78) })
+  page.drawLine({ start: { x: margin, y }, end: { x: 595 - margin, y }, thickness: 0.5, color: rgb(1, 0.69, 0) })
   y -= 20
 
   // Signature boxes

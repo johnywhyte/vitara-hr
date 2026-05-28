@@ -15,7 +15,7 @@ export function Card({ className, children, ...props }: HTMLAttributes<HTMLDivEl
 export function CardHeader({ className, children, ...props }: HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('bg-[#2D6A4F] text-white px-4 py-3 rounded-t-lg', className)}
+      className={cn('bg-[#71001D] text-white px-4 py-3 rounded-t-lg', className)}
       {...props}
     >
       {children}

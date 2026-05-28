@@ -24,9 +24,9 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div className="min-h-screen flex bg-[#F0F2F5]">
+    <div className="min-h-screen flex bg-[#FCF5EB]">
       {/* Sidebar */}
-      <aside className="w-52 bg-[#2D6A4F] text-white flex flex-col shrink-0 hidden md:flex">
+      <aside className="w-52 bg-[#71001D] text-white flex flex-col shrink-0 hidden md:flex">
         <div className="px-4 py-4 border-b border-white/10">
           <p className="text-[9px] text-white/60 uppercase tracking-widest mb-0.5">Vitara</p>
           <p className="text-sm font-bold">Admin Panel</p>
@@ -64,7 +64,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       </aside>
 
       {/* Mobile top bar */}
-      <div className="md:hidden fixed top-0 left-0 right-0 z-20 bg-[#2D6A4F] text-white px-4 py-2.5 flex items-center justify-between shadow-sm">
+      <div className="md:hidden fixed top-0 left-0 right-0 z-20 bg-[#71001D] text-white px-4 py-2.5 flex items-center justify-between shadow-sm">
         <p className="text-sm font-bold">Vitara Admin</p>
         <div className="flex gap-3">
           <Link href="/admin" className="text-xs text-white/80 hover:text-white">Dashboard</Link>

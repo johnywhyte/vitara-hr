@@ -89,12 +89,12 @@ export function FileUpload({
       {fileName ? (
         <div
           className={cn(
-            'flex items-center gap-2 p-2.5 rounded-md border bg-[#D8F3DC] border-[#B7E4C7]',
+            'flex items-center gap-2 p-2.5 rounded-md border bg-[#FFF3CD] border-[#FFE59E]',
             error && 'bg-[#FFE5E5] border-[#f5c6c6]'
           )}
         >
-          <CheckCircle className="w-4 h-4 text-[#2D6A4F] shrink-0" />
-          <span className="text-xs text-[#2D6A4F] flex-1 truncate">{fileName}</span>
+          <CheckCircle className="w-4 h-4 text-[#71001D] shrink-0" />
+          <span className="text-xs text-[#71001D] flex-1 truncate">{fileName}</span>
           <button
             type="button"
             onClick={handleClear}
@@ -106,7 +106,7 @@ export function FileUpload({
       ) : (
         <div
           className={cn(
-            'relative rounded-md border-2 border-dashed border-[#DEE2E6] bg-[#F8F9FA] p-4 text-center cursor-pointer hover:border-[#2D6A4F] hover:bg-[#D8F3DC]/20 transition-colors',
+            'relative rounded-md border-2 border-dashed border-[#DEE2E6] bg-[#F8F9FA] p-4 text-center cursor-pointer hover:border-[#71001D] hover:bg-[#FFF3CD]/20 transition-colors',
             error && 'border-[#C0392B]'
           )}
           onDrop={handleDrop}
@@ -122,14 +122,14 @@ export function FileUpload({
           />
           {uploading ? (
             <div className="flex flex-col items-center gap-1.5">
-              <Loader2 className="w-5 h-5 text-[#2D6A4F] animate-spin" />
+              <Loader2 className="w-5 h-5 text-[#71001D] animate-spin" />
               <p className="text-xs text-[#6C757D]">Uploading…</p>
             </div>
           ) : (
             <div className="flex flex-col items-center gap-1.5">
               <Upload className="w-5 h-5 text-[#ADB5BD]" />
               <p className="text-xs text-[#6C757D]">
-                <span className="font-semibold text-[#2D6A4F]">Tap to upload</span> or drag &amp; drop
+                <span className="font-semibold text-[#71001D]">Tap to upload</span> or drag &amp; drop
               </p>
               <p className="text-[10px] text-[#ADB5BD]">
                 {accept.replace(/\./g, '').toUpperCase()} · max {maxSizeMb}MB

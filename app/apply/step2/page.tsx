@@ -148,7 +148,7 @@ export default function Step2Page() {
         </div>
       )}
 
-      <div className="bg-[#2D6A4F] text-white rounded-t-lg px-4 py-3">
+      <div className="bg-[#71001D] text-white rounded-t-lg px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="text-[10px] bg-white/20 border border-white/30 rounded-full px-2 py-0.5 font-semibold">
             Step 2
@@ -263,7 +263,7 @@ export default function Step2Page() {
 
           {saveError && <p className="text-xs text-[#C0392B]">{saveError}</p>}
           {saved && (
-            <div className="p-2.5 bg-[#D8F3DC] border-l-4 border-[#52B788] rounded text-xs text-[#2D6A4F] font-semibold">
+            <div className="p-2.5 bg-[#FFF3CD] border-l-4 border-[#FFB000] rounded text-xs text-[#71001D] font-semibold">
               Progress saved
             </div>
           )}

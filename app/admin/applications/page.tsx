@@ -81,13 +81,13 @@ export default async function ApplicationsListPage({
               name="q"
               defaultValue={q}
               placeholder="Search by name or email…"
-              className="w-full pl-8 pr-3 py-1.5 text-sm border border-[#DEE2E6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#2D6A4F] focus:border-[#2D6A4F]"
+              className="w-full pl-8 pr-3 py-1.5 text-sm border border-[#DEE2E6] rounded-md focus:outline-none focus:ring-2 focus:ring-[#71001D] focus:border-[#71001D]"
             />
           </div>
           {status !== 'all' && <input type="hidden" name="status" value={status} />}
           <button
             type="submit"
-            className="px-3 py-1.5 bg-[#2D6A4F] text-white text-xs font-semibold rounded-md hover:bg-[#245840] transition-colors"
+            className="px-3 py-1.5 bg-[#71001D] text-white text-xs font-semibold rounded-md hover:bg-[#5A0017] transition-colors"
           >
             Search
           </button>
@@ -101,7 +101,7 @@ export default async function ApplicationsListPage({
               href={`/admin/applications?status=${f.value}${q ? `&q=${q}` : ''}`}
               className={`px-3 py-1 text-xs font-semibold rounded-full transition-colors ${
                 status === f.value
-                  ? 'bg-[#2D6A4F] text-white'
+                  ? 'bg-[#71001D] text-white'
                   : 'bg-[#F8F9FA] text-[#6C757D] hover:bg-[#E9ECEF]'
               }`}
             >
@@ -145,7 +145,7 @@ export default async function ApplicationsListPage({
                         <td className="px-4 py-3 text-right">
                           <Link
                             href={`/admin/applications/${app.id}`}
-                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#2D6A4F] hover:underline"
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-[#71001D] hover:underline"
                           >
                             Review <ChevronRight className="w-3.5 h-3.5" />
                           </Link>

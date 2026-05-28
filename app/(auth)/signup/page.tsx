@@ -58,10 +58,10 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-[#F0F2F5]">
+      <div className="min-h-screen flex flex-col items-center justify-center px-4 bg-[#FCF5EB]">
         <div className="w-full max-w-sm bg-white rounded-lg border border-[#DEE2E6] shadow-sm p-6 text-center">
-          <div className="w-14 h-14 bg-[#D8F3DC] rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-7 h-7 text-[#2D6A4F]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="w-14 h-14 bg-[#FFF3CD] rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg className="w-7 h-7 text-[#71001D]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
             </svg>
           </div>
@@ -69,14 +69,14 @@ export default function SignupPage() {
           <p className="text-xs text-[#6C757D] mb-1">
             We&apos;ve sent a verification link to:
           </p>
-          <p className="text-sm font-semibold text-[#2D6A4F] mb-3">{email}</p>
+          <p className="text-sm font-semibold text-[#71001D] mb-3">{email}</p>
           <p className="text-[11px] text-[#6C757D]">
             Click the link in the email to verify your account and start your application.
             Check your spam folder if you don&apos;t see it.
           </p>
           <Link
             href="/login"
-            className="mt-4 inline-block text-xs text-[#2D6A4F] font-semibold hover:underline"
+            className="mt-4 inline-block text-xs text-[#71001D] font-semibold hover:underline"
           >
             Back to Sign In
           </Link>
@@ -86,11 +86,11 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#F0F2F5]">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FCF5EB]">
       <div className="w-full max-w-sm">
         <div className="text-center mb-6">
           <Link href="/">
-            <div className="inline-block bg-[#2D6A4F] rounded-lg px-4 py-2 mb-3">
+            <div className="inline-block bg-[#71001D] rounded-lg px-4 py-2 mb-3">
               <p className="text-[9px] text-white/70 uppercase tracking-widest">Vitara</p>
               <p className="text-sm font-bold text-white">Recruitment Portal</p>
             </div>
@@ -184,7 +184,7 @@ export default function SignupPage() {
 
         <p className="text-center text-xs text-[#6C757D] mt-4">
           Already have an account?{' '}
-          <Link href="/login" className="text-[#2D6A4F] font-semibold hover:underline">
+          <Link href="/login" className="text-[#71001D] font-semibold hover:underline">
             Sign In
           </Link>
         </p>

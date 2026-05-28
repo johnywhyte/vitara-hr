@@ -15,9 +15,9 @@ export default async function ApplyLayout({ children }: { children: React.ReactN
   }
 
   return (
-    <div className="min-h-screen bg-[#F0F2F5]">
+    <div className="min-h-screen bg-[#FCF5EB]">
       {/* Top nav */}
-      <header className="bg-[#2D6A4F] text-white px-4 py-2.5 flex items-center justify-between sticky top-0 z-20 shadow-sm">
+      <header className="bg-[#71001D] text-white px-4 py-2.5 flex items-center justify-between sticky top-0 z-20 shadow-sm">
         <Link href="/apply" className="flex items-center gap-2">
           <div>
             <p className="text-[9px] text-white/60 uppercase tracking-widest leading-none">Vitara</p>

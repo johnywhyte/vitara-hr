@@ -71,21 +71,21 @@ export function GhanaIdField({ value, onChange, onVerified, error }: GhanaIdFiel
           error={error}
           className={cn(
             'pr-8',
-            status === 'verified' && 'border-[#52B788] focus:ring-[#52B788]',
+            status === 'verified' && 'border-[#FFB000] focus:ring-[#FFB000]',
             status === 'failed' && 'border-[#C0392B] focus:ring-[#C0392B]'
           )}
         />
         <div className="absolute right-2.5 top-1/2 -translate-y-1/2">
-          {status === 'verifying' && <Loader2 className="w-4 h-4 text-[#2D6A4F] animate-spin" />}
-          {status === 'verified' && <CheckCircle className="w-4 h-4 text-[#52B788]" />}
+          {status === 'verifying' && <Loader2 className="w-4 h-4 text-[#71001D] animate-spin" />}
+          {status === 'verified' && <CheckCircle className="w-4 h-4 text-[#FFB000]" />}
           {status === 'failed' && <XCircle className="w-4 h-4 text-[#C0392B]" />}
         </div>
       </div>
       {status === 'verifying' && (
-        <p className="text-[11px] text-[#2D6A4F] mt-1">Verifying your Ghana Card…</p>
+        <p className="text-[11px] text-[#71001D] mt-1">Verifying your Ghana Card…</p>
       )}
       {status === 'verified' && (
-        <p className="text-[11px] text-[#52B788] mt-1 flex items-center gap-1">
+        <p className="text-[11px] text-[#FFB000] mt-1 flex items-center gap-1">
           <CheckCircle className="w-3 h-3" /> {verifyMsg}
         </p>
       )}

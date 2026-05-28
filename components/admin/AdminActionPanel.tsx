@@ -62,9 +62,9 @@ export function AdminActionPanel({ applicationId, currentStatus }: AdminActionPa
 
   if (isApproved) {
     return (
-      <div className="flex items-center gap-2 p-3 bg-[#D8F3DC] border-l-4 border-[#52B788] rounded-md">
-        <CheckCircle className="w-4 h-4 text-[#2D6A4F] shrink-0" />
-        <p className="text-xs font-semibold text-[#2D6A4F]">This application has been approved.</p>
+      <div className="flex items-center gap-2 p-3 bg-[#FFF3CD] border-l-4 border-[#FFB000] rounded-md">
+        <CheckCircle className="w-4 h-4 text-[#71001D] shrink-0" />
+        <p className="text-xs font-semibold text-[#71001D]">This application has been approved.</p>
       </div>
     )
   }
@@ -101,7 +101,7 @@ export function AdminActionPanel({ applicationId, currentStatus }: AdminActionPa
   return (
     <div className="space-y-3">
       {success && (
-        <div className="p-2.5 bg-[#D8F3DC] border-l-4 border-[#52B788] rounded text-xs text-[#2D6A4F] font-semibold">
+        <div className="p-2.5 bg-[#FFF3CD] border-l-4 border-[#FFB000] rounded text-xs text-[#71001D] font-semibold">
           {success}
         </div>
       )}

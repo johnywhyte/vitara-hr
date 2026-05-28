@@ -46,11 +46,11 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#F0F2F5]">
+    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-[#FCF5EB]">
       <div className="w-full max-w-sm">
         <div className="text-center mb-6">
           <Link href="/">
-            <div className="inline-block bg-[#2D6A4F] rounded-lg px-4 py-2 mb-3">
+            <div className="inline-block bg-[#71001D] rounded-lg px-4 py-2 mb-3">
               <p className="text-[9px] text-white/70 uppercase tracking-widest">
                 Vitara
               </p>
@@ -158,7 +158,7 @@ export default function LoginPage() {
           Don&apos;t have an account?{" "}
           <Link
             href="/signup"
-            className="text-[#2D6A4F] font-semibold hover:underline"
+            className="text-[#71001D] font-semibold hover:underline"
           >
             Sign Up
           </Link>

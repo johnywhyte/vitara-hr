@@ -16,7 +16,7 @@ const statusConfig: Record<ApplicationStatus, { label: string; className: string
   },
   approved: {
     label: 'Approved',
-    className: 'bg-[#D8F3DC] text-[#2D6A4F]',
+    className: 'bg-[#FFF3CD] text-[#71001D]',
   },
   rejected: {
     label: 'Rejected',

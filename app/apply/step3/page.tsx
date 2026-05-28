@@ -23,7 +23,7 @@ function CheckItem({ label, value }: { label: string; value: boolean }) {
     <div className="flex items-center justify-between py-1.5 border-b border-[#F8F9FA] last:border-0">
       <span className="text-xs text-[#343A40]">{label}</span>
       {value ? (
-        <CheckCircle className="w-4 h-4 text-[#52B788]" />
+        <CheckCircle className="w-4 h-4 text-[#FFB000]" />
       ) : (
         <XCircle className="w-4 h-4 text-[#C0392B]" />
       )}
@@ -136,7 +136,7 @@ export default function Step3Page() {
   if (!appData) {
     return (
       <div className="flex items-center justify-center py-16">
-        <div className="animate-spin w-6 h-6 border-2 border-[#2D6A4F] border-t-transparent rounded-full" />
+        <div className="animate-spin w-6 h-6 border-2 border-[#71001D] border-t-transparent rounded-full" />
       </div>
     )
   }
@@ -146,7 +146,7 @@ export default function Step3Page() {
     return (
       <div className="text-center py-8">
         <ApplicationStepper currentStep={3} completedSteps={[1, 2]} />
-        <div className="bg-[#2D6A4F] rounded-xl p-6 text-white shadow-md">
+        <div className="bg-[#71001D] rounded-xl p-6 text-white shadow-md">
           <p className="text-4xl mb-3">🎉</p>
           <h2 className="text-lg font-bold mb-1">Application Approved!</h2>
           <p className="text-sm text-white/80">
@@ -164,8 +164,8 @@ export default function Step3Page() {
       <div>
         <ApplicationStepper currentStep={3} completedSteps={[1, 2]} />
         <div className="bg-white border border-[#DEE2E6] rounded-lg p-6 text-center shadow-sm">
-          <div className="w-14 h-14 bg-[#D8F3DC] rounded-full flex items-center justify-center mx-auto mb-3">
-            <Clock className="w-7 h-7 text-[#2D6A4F]" />
+          <div className="w-14 h-14 bg-[#FFF3CD] rounded-full flex items-center justify-center mx-auto mb-3">
+            <Clock className="w-7 h-7 text-[#71001D]" />
           </div>
           <h2 className="text-base font-bold text-[#343A40] mb-1">Application Submitted</h2>
           <p className="text-xs text-[#6C757D] mb-3">
@@ -184,7 +184,7 @@ export default function Step3Page() {
     <div>
       <ApplicationStepper currentStep={3} completedSteps={[1, 2]} />
 
-      <div className="bg-[#2D6A4F] text-white rounded-t-lg px-4 py-3">
+      <div className="bg-[#71001D] text-white rounded-t-lg px-4 py-3">
         <div className="flex items-center gap-2">
           <span className="text-[10px] bg-white/20 border border-white/30 rounded-full px-2 py-0.5 font-semibold">
             Step 3
@@ -213,7 +213,7 @@ export default function Step3Page() {
             </div>
             <div className="flex items-center gap-1">
               {personalComplete ? (
-                <span className="text-[10px] font-semibold text-[#52B788]">Complete</span>
+                <span className="text-[10px] font-semibold text-[#FFB000]">Complete</span>
               ) : (
                 <Link href="/apply/step1" className="text-[10px] font-semibold text-[#2980B9] flex items-center gap-0.5">
                   Edit <ChevronRight className="w-3 h-3" />
@@ -262,7 +262,7 @@ export default function Step3Page() {
             </div>
             <div className="flex items-center gap-1">
               {guarantorComplete ? (
-                <span className="text-[10px] font-semibold text-[#52B788]">Complete</span>
+                <span className="text-[10px] font-semibold text-[#FFB000]">Complete</span>
               ) : (
                 <Link href="/apply/step2" className="text-[10px] font-semibold text-[#2980B9] flex items-center gap-0.5">
                   Edit <ChevronRight className="w-3 h-3" />

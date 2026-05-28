@@ -35,8 +35,8 @@ export function ApplicationStepper({ currentStep, completedSteps = [] }: Applica
               <div
                 className={cn(
                   'w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors',
-                  isCurrent && 'border-[#2D6A4F] bg-[#2D6A4F] text-white',
-                  (isCompleted || isPast) && !isCurrent && 'border-[#52B788] bg-[#52B788] text-white',
+                  isCurrent && 'border-[#71001D] bg-[#71001D] text-white',
+                  (isCompleted || isPast) && !isCurrent && 'border-[#FFB000] bg-[#FFB000] text-white',
                   !isCurrent && !isCompleted && !isPast && 'border-[#DEE2E6] bg-white text-[#ADB5BD]'
                 )}
               >
@@ -45,7 +45,7 @@ export function ApplicationStepper({ currentStep, completedSteps = [] }: Applica
               <span
                 className={cn(
                   'text-[10px] font-semibold mt-1 text-center leading-tight',
-                  isCurrent ? 'text-[#2D6A4F]' : 'text-[#ADB5BD]'
+                  isCurrent ? 'text-[#71001D]' : 'text-[#ADB5BD]'
                 )}
               >
                 {step.label}
@@ -55,7 +55,7 @@ export function ApplicationStepper({ currentStep, completedSteps = [] }: Applica
               <div
                 className={cn(
                   'h-0.5 flex-1 mx-1 -mt-4',
-                  isPast || isCompleted ? 'bg-[#52B788]' : 'bg-[#DEE2E6]'
+                  isPast || isCompleted ? 'bg-[#FFB000]' : 'bg-[#DEE2E6]'
                 )}
               />
             )}

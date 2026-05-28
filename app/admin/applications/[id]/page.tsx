@@ -50,7 +50,7 @@ function FileLink({ label, url }: { label: string; url: string | null | undefine
         href={href}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-xs font-semibold text-[#2D6A4F] hover:underline flex items-center gap-1"
+        className="text-xs font-semibold text-[#71001D] hover:underline flex items-center gap-1"
       >
         View file <ExternalLink className="w-3 h-3" />
       </a>
@@ -123,7 +123,7 @@ export default async function ApplicationDetailPage({
       {/* Back link */}
       <Link
         href="/admin/applications"
-        className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#6C757D] hover:text-[#2D6A4F] mb-4 transition-colors"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#6C757D] hover:text-[#71001D] mb-4 transition-colors"
       >
         <ChevronLeft className="w-3.5 h-3.5" />
         All Applications
@@ -131,7 +131,7 @@ export default async function ApplicationDetailPage({
 
       {/* Header */}
       <div className="bg-white border border-[#DEE2E6] rounded-lg shadow-sm mb-4">
-        <div className="bg-[#2D6A4F] text-white px-4 py-4 rounded-t-lg">
+        <div className="bg-[#71001D] text-white px-4 py-4 rounded-t-lg">
           <div className="flex items-start justify-between gap-4">
             <div>
               <p className="text-xs text-white/60 mb-0.5">Applicant</p>

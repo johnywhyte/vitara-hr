@@ -37,9 +37,9 @@ export default async function AdminDashboard() {
     .limit(5)
 
   const statCards = [
-    { label: 'Total Applications', value: stats.total, icon: Users, color: 'text-[#2D6A4F]', bg: 'bg-[#D8F3DC]' },
+    { label: 'Total Applications', value: stats.total, icon: Users, color: 'text-[#71001D]', bg: 'bg-[#FFF3CD]' },
     { label: 'Pending Review', value: stats.submitted + stats.under_review, icon: Clock, color: 'text-[#856404]', bg: 'bg-[#FFF3CD]' },
-    { label: 'Approved', value: stats.approved, icon: CheckCircle, color: 'text-[#2D6A4F]', bg: 'bg-[#D8F3DC]' },
+    { label: 'Approved', value: stats.approved, icon: CheckCircle, color: 'text-[#71001D]', bg: 'bg-[#FFF3CD]' },
     { label: 'Rejected', value: stats.rejected, icon: XCircle, color: 'text-[#C0392B]', bg: 'bg-[#FFE5E5]' },
   ]
 
@@ -78,7 +78,7 @@ export default async function AdminDashboard() {
             { label: 'Draft', count: stats.draft, color: 'bg-[#E9ECEF] text-[#6C757D]' },
             { label: 'Submitted', count: stats.submitted, color: 'bg-[#E8F4FD] text-[#2980B9]' },
             { label: 'In Review', count: stats.under_review, color: 'bg-[#FFF3CD] text-[#856404]' },
-            { label: 'Approved', count: stats.approved, color: 'bg-[#D8F3DC] text-[#2D6A4F]' },
+            { label: 'Approved', count: stats.approved, color: 'bg-[#FFF3CD] text-[#71001D]' },
             { label: 'Rejected', count: stats.rejected, color: 'bg-[#FFE5E5] text-[#C0392B]' },
           ].map((s) => (
             <div key={s.label} className={`rounded-lg py-2 ${s.color}`}>
@@ -98,7 +98,7 @@ export default async function AdminDashboard() {
           </div>
           <Link
             href="/admin/applications"
-            className="text-xs font-semibold text-[#2D6A4F] hover:underline flex items-center gap-0.5"
+            className="text-xs font-semibold text-[#71001D] hover:underline flex items-center gap-0.5"
           >
             View all <ChevronRight className="w-3.5 h-3.5" />
           </Link>
@@ -130,7 +130,7 @@ export default async function AdminDashboard() {
                   className="flex items-center justify-between px-4 py-3 hover:bg-[#F8F9FA] transition-colors group"
                 >
                   <div>
-                    <p className="text-sm font-semibold text-[#343A40] group-hover:text-[#2D6A4F]">{name}</p>
+                    <p className="text-sm font-semibold text-[#343A40] group-hover:text-[#71001D]">{name}</p>
                     <p className="text-[11px] text-[#6C757D]">
                       {prof?.email} · Submitted {formatDate(a.submitted_at)}
                     </p>
