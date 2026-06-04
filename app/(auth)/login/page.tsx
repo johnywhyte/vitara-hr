@@ -156,15 +156,17 @@ export default function LoginPage() {
           </button>
         </div>
 
-        <p className="text-center text-xs text-[#6C757D] mt-4">
-          Don&apos;t have an account?{" "}
-          <Link
-            href="/signup"
-            className="text-[#71001D] font-semibold hover:underline"
-          >
-            Sign Up
+        <div className="flex items-center justify-between mt-4">
+          <Link href="/forgot-password" className="text-xs text-[#6C757D] hover:text-[#71001D] hover:underline">
+            Forgot password?
           </Link>
-        </p>
+          <p className="text-xs text-[#6C757D]">
+            No account?{" "}
+            <Link href="/signup" className="text-[#71001D] font-semibold hover:underline">
+              Sign Up
+            </Link>
+          </p>
+        </div>
       </div>
       </div>
 
