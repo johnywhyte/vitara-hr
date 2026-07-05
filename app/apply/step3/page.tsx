@@ -67,6 +67,13 @@ export default function Step3Page() {
   const gd = appData?.guarantor_details
   const status = appData?.status
 
+  // Detect whether the new-application-fields migration has run. Supabase's
+  // `select *` omits columns that don't exist, so a missing key means the
+  // column isn't there yet — in that case we don't gate submission on the new
+  // fields (they activate automatically once the migration is applied).
+  const applicantColsReady = !!ad && 'has_motorbike' in ad
+  const guarantorColsReady = !!gd && 'place_of_work' in gd
+
   const checks = {
     personal: {
       firstName: !!ad?.first_name,
@@ -75,21 +82,21 @@ export default function Step3Page() {
       phone: !!ad?.phone_number,
       ghanaId: !!ad?.ghana_id_number,
       region: !!ad?.region_id,
-      driversLicense: !!ad?.drivers_license_number,
-      motorbike: ad?.has_motorbike === 'yes' || ad?.has_motorbike === 'no',
-      compensation: !!ad?.compensation_expectation,
-      startDate: !!ad?.possible_start_date,
+      driversLicense: !applicantColsReady || !!ad?.drivers_license_number,
+      motorbike: !applicantColsReady || ad?.has_motorbike === 'yes' || ad?.has_motorbike === 'no',
+      compensation: !applicantColsReady || !!ad?.compensation_expectation,
+      startDate: !applicantColsReady || !!ad?.possible_start_date,
       cv: !!ad?.cv_url,
       coverLetter: !!ad?.cover_letter_url,
       idCard: !!ad?.ghana_id_card_url,
-      driversLicenseFile: !!ad?.drivers_license_url,
+      driversLicenseFile: !applicantColsReady || !!ad?.drivers_license_url,
     },
     guarantor: {
       firstName: !!gd?.first_name,
       lastName: !!gd?.last_name,
       email: !!gd?.email,
       phone: !!gd?.phone_number,
-      placeOfWork: !!gd?.place_of_work,
+      placeOfWork: !guarantorColsReady || !!gd?.place_of_work,
       nationalId: !!gd?.national_id_url,
       signedForm: !!gd?.signed_form_url,
     },
@@ -295,14 +302,20 @@ export default function Step3Page() {
             <CheckItem label="Phone Number" value={checks.personal.phone} />
             <CheckItem label="Ghana Card Number" value={checks.personal.ghanaId} />
             <CheckItem label="Region" value={checks.personal.region} />
-            <CheckItem label="Driver's License Number" value={checks.personal.driversLicense} />
-            <CheckItem label="Motorbike Question Answered" value={checks.personal.motorbike} />
-            <CheckItem label="Compensation Expectation" value={checks.personal.compensation} />
-            <CheckItem label="Possible Start Date" value={checks.personal.startDate} />
+            {applicantColsReady && (
+              <>
+                <CheckItem label="Driver's License Number" value={checks.personal.driversLicense} />
+                <CheckItem label="Motorbike Question Answered" value={checks.personal.motorbike} />
+                <CheckItem label="Compensation Expectation" value={checks.personal.compensation} />
+                <CheckItem label="Possible Start Date" value={checks.personal.startDate} />
+              </>
+            )}
             <CheckItem label="CV Uploaded" value={checks.personal.cv} />
             <CheckItem label="Cover Letter Uploaded" value={checks.personal.coverLetter} />
             <CheckItem label="Ghana ID Card Uploaded" value={checks.personal.idCard} />
-            <CheckItem label="Driver's License Uploaded" value={checks.personal.driversLicenseFile} />
+            {applicantColsReady && (
+              <CheckItem label="Driver's License Uploaded" value={checks.personal.driversLicenseFile} />
+            )}
           </div>
         </div>
 
@@ -342,7 +355,9 @@ export default function Step3Page() {
             <CheckItem label="Guarantor Last Name" value={checks.guarantor.lastName} />
             <CheckItem label="Email Address" value={checks.guarantor.email} />
             <CheckItem label="Phone Number" value={checks.guarantor.phone} />
-            <CheckItem label="Place of Work" value={checks.guarantor.placeOfWork} />
+            {guarantorColsReady && (
+              <CheckItem label="Place of Work" value={checks.guarantor.placeOfWork} />
+            )}
             <CheckItem label="National ID Uploaded" value={checks.guarantor.nationalId} />
             <CheckItem label="Signed Form Uploaded" value={checks.guarantor.signedForm} />
           </div>
