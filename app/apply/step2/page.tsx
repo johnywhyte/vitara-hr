@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { guarantorDetailsSchema, type GuarantorDetailsFormData } from '@/lib/validations'
+import { upsertTolerant, NEW_GUARANTOR_COLUMNS } from '@/lib/supabase/upsert'
 import { ApplicationStepper } from '@/components/ApplicationStepper'
 import { FileUpload } from '@/components/FileUpload'
 import { Button } from '@/components/ui/button'
@@ -98,12 +99,13 @@ export default function Step2Page() {
     setSaveError('')
     setSaved(false)
 
-    const { error } = await supabase
-      .from('guarantor_details')
-      .upsert(
-        { application_id: applicationId, ...data, updated_at: new Date().toISOString() },
-        { onConflict: 'application_id' }
-      )
+    const { error } = await upsertTolerant(
+      supabase,
+      'guarantor_details',
+      { application_id: applicationId, ...data, updated_at: new Date().toISOString() },
+      'application_id',
+      NEW_GUARANTOR_COLUMNS
+    )
 
     setSaving(false)
     if (error) {
@@ -121,12 +123,13 @@ export default function Step2Page() {
     setSaved(false)
 
     const vals = watch()
-    const { error } = await supabase
-      .from('guarantor_details')
-      .upsert(
-        { application_id: applicationId, ...vals, updated_at: new Date().toISOString() },
-        { onConflict: 'application_id' }
-      )
+    const { error } = await upsertTolerant(
+      supabase,
+      'guarantor_details',
+      { application_id: applicationId, ...vals, updated_at: new Date().toISOString() },
+      'application_id',
+      NEW_GUARANTOR_COLUMNS
+    )
 
     setSaving(false)
     if (error) {

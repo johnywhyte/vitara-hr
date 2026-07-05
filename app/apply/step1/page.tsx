@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { personalDetailsSchema, type PersonalDetailsFormData } from '@/lib/validations'
+import { upsertTolerant, NEW_APPLICANT_COLUMNS } from '@/lib/supabase/upsert'
 import { GHANA_REGIONS } from '@/lib/ghana-regions'
 import { ApplicationStepper } from '@/components/ApplicationStepper'
 import { GhanaIdField } from '@/components/GhanaIdField'
@@ -146,9 +147,13 @@ export default function Step1Page() {
       updated_at: new Date().toISOString(),
     }
 
-    const { error } = await supabase
-      .from('applicant_details')
-      .upsert(payload, { onConflict: 'application_id' })
+    const { error } = await upsertTolerant(
+      supabase,
+      'applicant_details',
+      payload,
+      'application_id',
+      NEW_APPLICANT_COLUMNS
+    )
 
     setSaving(false)
     if (error) {
@@ -176,9 +181,13 @@ export default function Step1Page() {
       ghana_id_verified: ghanaIdVerified,
       updated_at: new Date().toISOString(),
     }
-    const { error } = await supabase
-      .from('applicant_details')
-      .upsert(payload, { onConflict: 'application_id' })
+    const { error } = await upsertTolerant(
+      supabase,
+      'applicant_details',
+      payload,
+      'application_id',
+      NEW_APPLICANT_COLUMNS
+    )
 
     setSaving(false)
     if (error) {
