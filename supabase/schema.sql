@@ -24,6 +24,7 @@ CREATE TABLE public.applications (
   submitted_at      TIMESTAMPTZ,
   reviewed_at       TIMESTAMPTZ,
   reviewed_by       UUID REFERENCES public.profiles(id),
+  draft_reminder_sent_at TIMESTAMPTZ,
   created_at        TIMESTAMPTZ DEFAULT NOW(),
   updated_at        TIMESTAMPTZ DEFAULT NOW()
 );
@@ -40,9 +41,14 @@ CREATE TABLE public.applicant_details (
   ghana_id_number     TEXT,
   ghana_id_verified   BOOLEAN DEFAULT FALSE,
   region_id           TEXT,
+  drivers_license_number TEXT,
+  has_motorbike       TEXT CHECK (has_motorbike IN ('yes','no')),
+  compensation_expectation TEXT,
+  possible_start_date DATE,
   cv_url              TEXT,
   cover_letter_url    TEXT,
   ghana_id_card_url   TEXT,
+  drivers_license_url TEXT,
   created_at          TIMESTAMPTZ DEFAULT NOW(),
   updated_at          TIMESTAMPTZ DEFAULT NOW()
 );
@@ -56,6 +62,7 @@ CREATE TABLE public.guarantor_details (
   middle_name     TEXT,
   email           TEXT,
   phone_number    TEXT,
+  place_of_work   TEXT,
   national_id_url TEXT,
   signed_form_url TEXT,
   created_at      TIMESTAMPTZ DEFAULT NOW(),

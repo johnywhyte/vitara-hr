@@ -97,9 +97,14 @@ export default async function ApplicationDetailPage({
       ghana_id_number: string | null
       ghana_id_verified: boolean
       region_id: string | null
+      drivers_license_number: string | null
+      has_motorbike: 'yes' | 'no' | null
+      compensation_expectation: string | null
+      possible_start_date: string | null
       cv_url: string | null
       cover_letter_url: string | null
       ghana_id_card_url: string | null
+      drivers_license_url: string | null
     } | null
     guarantor_details: {
       first_name: string | null
@@ -107,6 +112,7 @@ export default async function ApplicationDetailPage({
       middle_name: string | null
       email: string | null
       phone_number: string | null
+      place_of_work: string | null
       national_id_url: string | null
       signed_form_url: string | null
     } | null
@@ -190,6 +196,19 @@ export default async function ApplicationDetailPage({
               value={ad?.ghana_id_verified ? '✓ Verified' : '✗ Not verified'}
             />
             <DetailRow label="Region" value={regionName} />
+            <DetailRow label="Driver's License No." value={ad?.drivers_license_number} mono />
+            <DetailRow
+              label="Has Motorbike"
+              value={ad?.has_motorbike ? (ad.has_motorbike === 'yes' ? 'Yes' : 'No') : null}
+            />
+            <DetailRow
+              label="Compensation (GHS)"
+              value={ad?.compensation_expectation}
+            />
+            <DetailRow
+              label="Possible Start Date"
+              value={ad?.possible_start_date ? formatDate(ad.possible_start_date) : null}
+            />
           </div>
 
           <div className="border-t border-[#E9ECEF] mt-1">
@@ -201,6 +220,7 @@ export default async function ApplicationDetailPage({
               <FileLink label="CV / Resume" url={ad?.cv_url} />
               <FileLink label="Cover Letter" url={ad?.cover_letter_url} />
               <FileLink label="Ghana ID Card" url={ad?.ghana_id_card_url} />
+              <FileLink label="Driver's License" url={ad?.drivers_license_url} />
             </div>
           </div>
         </div>
@@ -218,6 +238,7 @@ export default async function ApplicationDetailPage({
             />
             <DetailRow label="Email" value={gd?.email} />
             <DetailRow label="Phone" value={gd?.phone_number} />
+            <DetailRow label="Place of Work" value={gd?.place_of_work} />
           </div>
 
           <div className="border-t border-[#E9ECEF] mt-1">

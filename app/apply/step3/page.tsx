@@ -75,15 +75,21 @@ export default function Step3Page() {
       phone: !!ad?.phone_number,
       ghanaId: !!ad?.ghana_id_number,
       region: !!ad?.region_id,
+      driversLicense: !!ad?.drivers_license_number,
+      motorbike: ad?.has_motorbike === 'yes' || ad?.has_motorbike === 'no',
+      compensation: !!ad?.compensation_expectation,
+      startDate: !!ad?.possible_start_date,
       cv: !!ad?.cv_url,
       coverLetter: !!ad?.cover_letter_url,
       idCard: !!ad?.ghana_id_card_url,
+      driversLicenseFile: !!ad?.drivers_license_url,
     },
     guarantor: {
       firstName: !!gd?.first_name,
       lastName: !!gd?.last_name,
       email: !!gd?.email,
       phone: !!gd?.phone_number,
+      placeOfWork: !!gd?.place_of_work,
       nationalId: !!gd?.national_id_url,
       signedForm: !!gd?.signed_form_url,
     },
@@ -158,23 +164,47 @@ export default function Step3Page() {
     )
   }
 
-  // Submitted state
+  // Submitted state — mirrors the HR confirmation email sent to the applicant
   if (submitted && status !== 'rejected') {
     return (
       <div>
         <ApplicationStepper currentStep={3} completedSteps={[1, 2]} />
-        <div className="bg-white border border-[#DEE2E6] rounded-lg p-6 text-center shadow-sm">
-          <div className="w-14 h-14 bg-[#FFF3CD] rounded-full flex items-center justify-center mx-auto mb-3">
-            <Clock className="w-7 h-7 text-[#71001D]" />
+        <div className="bg-white border border-[#DEE2E6] rounded-lg p-6 shadow-sm">
+          <div className="text-center">
+            <div className="w-14 h-14 bg-[#FFF3CD] rounded-full flex items-center justify-center mx-auto mb-3">
+              <Clock className="w-7 h-7 text-[#71001D]" />
+            </div>
+            <h2 className="text-base font-bold text-[#343A40] mb-1">Application Received!</h2>
+            <StatusBadge status="submitted" />
           </div>
-          <h2 className="text-base font-bold text-[#343A40] mb-1">Application Submitted</h2>
-          <p className="text-xs text-[#6C757D] mb-3">
-            Your application is under review. Our HR team will reach out within 3–5 business days.
-          </p>
-          <StatusBadge status="submitted" />
-          <p className="text-[11px] text-[#ADB5BD] mt-3">
-            Check your email for a confirmation message.
-          </p>
+
+          {/* HR confirmation message */}
+          <div className="mt-4 space-y-3 text-left">
+            <p className="text-xs text-[#343A40]">
+              Thank you for submitting your application to <strong>Vitara Agricultural
+              E-Commerce</strong>. We have successfully received your application and it is now
+              under review by our HR team.
+            </p>
+            <div className="p-3 bg-[#FFF3CD] border-l-4 border-[#FFB000] rounded-md">
+              <p className="text-xs font-bold text-[#71001D]">What happens next?</p>
+              <p className="text-[11px] text-[#71001D]/90 mt-0.5">
+                Our HR team will review your application within 3–5 business days. You will
+                receive an email notification once a decision has been made.
+              </p>
+            </div>
+            {/* 30-day account deletion notice */}
+            <div className="p-3 bg-[#E8F4FD] border-l-4 border-[#2980B9] rounded-md">
+              <p className="text-xs font-bold text-[#2980B9]">Data retention notice</p>
+              <p className="text-[11px] text-[#1a5276] mt-0.5">
+                For your privacy, if no decision is recorded on your application, your account and
+                the documents you uploaded will be automatically deleted <strong>30 days</strong> after
+                submission. A confirmation of this has also been sent to your email.
+              </p>
+            </div>
+            <p className="text-[11px] text-[#ADB5BD] text-center pt-1">
+              A confirmation message has been sent to your email.
+            </p>
+          </div>
         </div>
       </div>
     )
@@ -183,6 +213,24 @@ export default function Step3Page() {
   return (
     <div>
       <ApplicationStepper currentStep={3} completedSteps={[1, 2]} />
+
+      {/* Rejection message */}
+      {status === 'rejected' && (
+        <div className="mb-4 p-3 bg-[#FFE5E5] border-l-4 border-[#C0392B] rounded-md flex gap-2.5">
+          <XCircle className="w-4 h-4 text-[#C0392B] shrink-0 mt-0.5" />
+          <div>
+            <p className="text-xs font-bold text-[#C0392B]">Application Rejected</p>
+            {appData.rejection_reason && (
+              <p className="text-xs text-[#C0392B] mt-0.5">{appData.rejection_reason}</p>
+            )}
+            <p className="text-[11px] text-[#C0392B]/80 mt-1">
+              Please review and correct the{' '}
+              {appData.rejection_section === 'guarantor' ? 'guarantor' : 'personal'} details,
+              then resubmit your application.
+            </p>
+          </div>
+        </div>
+      )}
 
       <div className="bg-[#71001D] text-white rounded-t-lg px-4 py-3">
         <div className="flex items-center gap-2">
@@ -247,9 +295,14 @@ export default function Step3Page() {
             <CheckItem label="Phone Number" value={checks.personal.phone} />
             <CheckItem label="Ghana Card Number" value={checks.personal.ghanaId} />
             <CheckItem label="Region" value={checks.personal.region} />
+            <CheckItem label="Driver's License Number" value={checks.personal.driversLicense} />
+            <CheckItem label="Motorbike Question Answered" value={checks.personal.motorbike} />
+            <CheckItem label="Compensation Expectation" value={checks.personal.compensation} />
+            <CheckItem label="Possible Start Date" value={checks.personal.startDate} />
             <CheckItem label="CV Uploaded" value={checks.personal.cv} />
             <CheckItem label="Cover Letter Uploaded" value={checks.personal.coverLetter} />
             <CheckItem label="Ghana ID Card Uploaded" value={checks.personal.idCard} />
+            <CheckItem label="Driver's License Uploaded" value={checks.personal.driversLicenseFile} />
           </div>
         </div>
 
@@ -289,6 +342,7 @@ export default function Step3Page() {
             <CheckItem label="Guarantor Last Name" value={checks.guarantor.lastName} />
             <CheckItem label="Email Address" value={checks.guarantor.email} />
             <CheckItem label="Phone Number" value={checks.guarantor.phone} />
+            <CheckItem label="Place of Work" value={checks.guarantor.placeOfWork} />
             <CheckItem label="National ID Uploaded" value={checks.guarantor.nationalId} />
             <CheckItem label="Signed Form Uploaded" value={checks.guarantor.signedForm} />
           </div>

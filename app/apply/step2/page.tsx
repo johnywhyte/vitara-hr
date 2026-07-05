@@ -41,6 +41,7 @@ export default function Step2Page() {
       middle_name: '',
       email: '',
       phone_number: '',
+      place_of_work: '',
       national_id_url: '',
       signed_form_url: '',
     },
@@ -83,6 +84,7 @@ export default function Step2Page() {
       setValue('middle_name', details.middle_name ?? '')
       setValue('email', details.email ?? '')
       setValue('phone_number', details.phone_number ?? '')
+      setValue('place_of_work', details.place_of_work ?? '')
       setValue('national_id_url', details.national_id_url ?? '')
       setValue('signed_form_url', details.signed_form_url ?? '')
     }
@@ -257,6 +259,17 @@ export default function Step2Page() {
               />
               {errors.phone_number && <p className="text-[11px] text-[#C0392B] mt-0.5">{errors.phone_number.message}</p>}
             </div>
+          </div>
+
+          <div>
+            <Label required>Place of Work</Label>
+            <Input
+              {...register('place_of_work')}
+              placeholder="Employer / business name"
+              error={errors.place_of_work?.message}
+              disabled={isSubmitted}
+            />
+            {errors.place_of_work && <p className="text-[11px] text-[#C0392B] mt-0.5">{errors.place_of_work.message}</p>}
           </div>
 
           <div className="h-px bg-[#E9ECEF]" />

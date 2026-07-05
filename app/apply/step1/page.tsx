@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
@@ -46,9 +46,14 @@ export default function Step1Page() {
       phone_number: '',
       ghana_id_number: '',
       region_id: '',
+      drivers_license_number: '',
+      has_motorbike: undefined,
+      compensation_expectation: '',
+      possible_start_date: '',
       cv_url: '',
       cover_letter_url: '',
       ghana_id_card_url: '',
+      drivers_license_url: '',
     },
   })
 
@@ -56,6 +61,14 @@ export default function Step1Page() {
   const cvUrl = watch('cv_url')
   const coverLetterUrl = watch('cover_letter_url')
   const ghanaIdCardUrl = watch('ghana_id_card_url')
+  const driversLicenseUrl = watch('drivers_license_url')
+
+  // Latest date of birth that still makes an applicant 18 today.
+  const maxDob = useMemo(() => {
+    const d = new Date()
+    d.setFullYear(d.getFullYear() - 18)
+    return d.toISOString().split('T')[0]
+  }, [])
 
   const loadData = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser()
@@ -104,9 +117,16 @@ export default function Step1Page() {
       setValue('phone_number', details.phone_number ?? '')
       setValue('ghana_id_number', details.ghana_id_number ?? '')
       setValue('region_id', details.region_id ?? '')
+      setValue('drivers_license_number', details.drivers_license_number ?? '')
+      if (details.has_motorbike === 'yes' || details.has_motorbike === 'no') {
+        setValue('has_motorbike', details.has_motorbike)
+      }
+      setValue('compensation_expectation', details.compensation_expectation ?? '')
+      setValue('possible_start_date', details.possible_start_date ?? '')
       setValue('cv_url', details.cv_url ?? '')
       setValue('cover_letter_url', details.cover_letter_url ?? '')
       setValue('ghana_id_card_url', details.ghana_id_card_url ?? '')
+      setValue('drivers_license_url', details.drivers_license_url ?? '')
       setGhanaIdVerified(details.ghana_id_verified ?? false)
     }
   }, [supabase, setValue])
@@ -145,12 +165,20 @@ export default function Step1Page() {
     setSaved(false)
 
     const vals = watch()
+    // Empty strings are invalid for DATE / checked columns — store NULL instead
+    // so incomplete drafts can still be saved.
+    const payload = {
+      application_id: applicationId,
+      ...vals,
+      date_of_birth: vals.date_of_birth || null,
+      possible_start_date: vals.possible_start_date || null,
+      has_motorbike: vals.has_motorbike || null,
+      ghana_id_verified: ghanaIdVerified,
+      updated_at: new Date().toISOString(),
+    }
     const { error } = await supabase
       .from('applicant_details')
-      .upsert(
-        { application_id: applicationId, ...vals, ghana_id_verified: ghanaIdVerified, updated_at: new Date().toISOString() },
-        { onConflict: 'application_id' }
-      )
+      .upsert(payload, { onConflict: 'application_id' })
 
     setSaving(false)
     if (error) {
@@ -275,6 +303,7 @@ export default function Step1Page() {
             <Input
               {...register('date_of_birth')}
               type="date"
+              max={maxDob}
               error={errors.date_of_birth?.message}
               disabled={isSubmitted}
             />
@@ -318,6 +347,58 @@ export default function Step1Page() {
           {errors.region_id && <p className="text-[11px] text-[#C0392B] mt-0.5">{errors.region_id.message}</p>}
         </div>
 
+        {/* Driver's license number — compulsory */}
+        <div>
+          <Label required>Driver&apos;s License Number</Label>
+          <Input
+            {...register('drivers_license_number')}
+            placeholder="e.g. GHA-DL-1234567"
+            error={errors.drivers_license_number?.message}
+            disabled={isSubmitted}
+          />
+          {errors.drivers_license_number && <p className="text-[11px] text-[#C0392B] mt-0.5">{errors.drivers_license_number.message}</p>}
+          <p className="text-[10px] text-[#6C757D] mt-0.5">A valid driver&apos;s license is required for this role.</p>
+        </div>
+
+        {/* Motorbike ownership */}
+        <div>
+          <Label required>Do you have a motorbike?</Label>
+          <Select
+            {...register('has_motorbike')}
+            error={errors.has_motorbike?.message}
+            disabled={isSubmitted}
+          >
+            <option value="">Select…</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </Select>
+          {errors.has_motorbike && <p className="text-[11px] text-[#C0392B] mt-0.5">{errors.has_motorbike.message}</p>}
+        </div>
+
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <Label required>Compensation (GHS / month)</Label>
+            <Input
+              {...register('compensation_expectation')}
+              placeholder="e.g. 1500"
+              inputMode="numeric"
+              error={errors.compensation_expectation?.message}
+              disabled={isSubmitted}
+            />
+            {errors.compensation_expectation && <p className="text-[11px] text-[#C0392B] mt-0.5">{errors.compensation_expectation.message}</p>}
+          </div>
+          <div>
+            <Label required>Possible Start Date</Label>
+            <Input
+              {...register('possible_start_date')}
+              type="date"
+              error={errors.possible_start_date?.message}
+              disabled={isSubmitted}
+            />
+            {errors.possible_start_date && <p className="text-[11px] text-[#C0392B] mt-0.5">{errors.possible_start_date.message}</p>}
+          </div>
+        </div>
+
         <div className="h-px bg-[#E9ECEF]" />
 
         {/* File uploads */}
@@ -359,6 +440,20 @@ export default function Step1Page() {
             userId={userId ?? 'unknown'}
             folder="ghana-id"
             error={errors.ghana_id_card_url?.message}
+            disabled={isSubmitted}
+          />
+        </div>
+
+        <div>
+          <Label required>Driver&apos;s License (Valid)</Label>
+          <FileUpload
+            label="Driver's License"
+            accept=".pdf,.jpg,.jpeg,.png"
+            value={driversLicenseUrl}
+            onChange={(url) => setValue('drivers_license_url', url, { shouldValidate: true })}
+            userId={userId ?? 'unknown'}
+            folder="drivers-license"
+            error={errors.drivers_license_url?.message}
             disabled={isSubmitted}
           />
         </div>
