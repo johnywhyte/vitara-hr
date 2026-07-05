@@ -62,11 +62,33 @@ export async function sendApplicationSubmittedEmail(to: string, name: string) {
       <h2 style="margin:0 0 8px;color:#71001D;font-size:18px;">Application Received!</h2>
       <p style="margin:0 0 16px;color:#343A40;font-size:14px;">Dear ${name},</p>
       <p style="margin:0 0 16px;color:#343A40;font-size:14px;">Thank you for submitting your application to <strong>Vitara Agricultural E-Commerce</strong>. We have successfully received your application and it is now under review by our HR team.</p>
-      <div style="background:#FFF3CD;border-left:3px solid #FFB000;border-radius:6px;padding:12px 16px;margin:0 0 20px;">
+      <div style="background:#FFF3CD;border-left:3px solid #FFB000;border-radius:6px;padding:12px 16px;margin:0 0 16px;">
         <p style="margin:0;color:#71001D;font-size:13px;font-weight:600;">What happens next?</p>
         <p style="margin:6px 0 0;color:#71001D;font-size:12px;">Our team will review your application within 3–5 business days. You will receive an email notification once a decision has been made.</p>
       </div>
+      <div style="background:#E8F4FD;border-left:3px solid #2980B9;border-radius:6px;padding:12px 16px;margin:0 0 20px;">
+        <p style="margin:0;color:#2980B9;font-size:13px;font-weight:600;">Data retention notice</p>
+        <p style="margin:6px 0 0;color:#1a5276;font-size:12px;">For your privacy, if no decision is recorded on your application, your account and the documents you uploaded will be automatically deleted <strong>30 days</strong> after this submission.</p>
+      </div>
       <a href="${BASE_URL}/apply/step3" style="display:inline-block;background:#71001D;color:#fff;text-decoration:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;">View Application</a>
+    `),
+  })
+}
+
+export async function sendDraftReminderEmail(to: string, name: string) {
+  return getResend().emails.send({
+    from: FROM,
+    to,
+    subject: 'Finish your application — Vitara Recruitment',
+    html: baseHtml(`
+      <h2 style="margin:0 0 8px;color:#71001D;font-size:18px;">Your application is almost there</h2>
+      <p style="margin:0 0 16px;color:#343A40;font-size:14px;">Dear ${name},</p>
+      <p style="margin:0 0 16px;color:#343A40;font-size:14px;">We noticed you started an application to <strong>Vitara Agricultural E-Commerce</strong> but haven&rsquo;t submitted it yet. Your progress has been saved — you can pick up right where you left off.</p>
+      <div style="background:#FFF3CD;border-left:3px solid #FFB000;border-radius:6px;padding:12px 16px;margin:0 0 20px;">
+        <p style="margin:0;color:#71001D;font-size:13px;font-weight:600;">Don&rsquo;t miss out</p>
+        <p style="margin:6px 0 0;color:#71001D;font-size:12px;">Complete the remaining steps and submit your application so our HR team can review it.</p>
+      </div>
+      <a href="${BASE_URL}/apply/step1" style="display:inline-block;background:#71001D;color:#fff;text-decoration:none;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;">Continue Application</a>
     `),
   })
 }

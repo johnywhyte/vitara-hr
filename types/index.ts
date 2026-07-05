@@ -37,9 +37,14 @@ export interface ApplicantDetails {
   ghana_id_number: string | null
   ghana_id_verified: boolean
   region_id: string | null
+  drivers_license_number: string | null
+  has_motorbike: 'yes' | 'no' | null
+  compensation_expectation: string | null
+  possible_start_date: string | null
   cv_url: string | null
   cover_letter_url: string | null
   ghana_id_card_url: string | null
+  drivers_license_url: string | null
   created_at: string
   updated_at: string
 }
@@ -52,6 +57,7 @@ export interface GuarantorDetails {
   middle_name: string | null
   email: string | null
   phone_number: string | null
+  place_of_work: string | null
   national_id_url: string | null
   signed_form_url: string | null
   created_at: string
